@@ -377,7 +377,7 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                                 <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#2547F9]/[0.08] text-[#2547F9]">
                                                                     <CategoryIcon aria-hidden="true" className="size-4" />
                                                                 </span>
-                                                                <p className="text-[13px] font-semibold leading-tight text-slate-900">{category.name}</p>
+                                                                <p className="text-[11px] font-semibold uppercase leading-tight tracking-[0.08em] text-slate-500">{category.name}</p>
                                                             </div>
                                                             <ul className="mt-3 space-y-0.5 border-t border-slate-900/[0.06] pt-3">
                                                                 {category.services.length > 0 ? (
@@ -388,7 +388,7 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                                                 className="block rounded-lg px-2.5 py-2 transition-colors hover:bg-[#2547F9]/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]"
                                                                             >
                                                                                 <span className="flex items-start justify-between gap-2">
-                                                                                    <span className="text-sm font-medium leading-snug text-slate-800">{service.name}</span>
+                                                                                    <span className="text-[13px] font-medium leading-snug text-slate-800">{service.name}</span>
                                                                                     {service.isFeatured && (
                                                                                         <span className="mt-0.5 shrink-0 rounded-full bg-[#2547F9]/10 px-1.5 py-0.5 text-[10px] font-semibold text-[#2547F9]">
                                                                                             Terlaris
@@ -399,7 +399,7 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                                         </li>
                                                                     ))
                                                                 ) : (
-                                                                    <li className="px-2.5 py-2 text-sm text-slate-400">Segera hadir</li>
+                                            <li className="px-2.5 py-2 text-[13px] text-slate-400">Segera hadir</li>
                                                                 )}
                                                             </ul>
                                                         </div>
@@ -411,16 +411,16 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                 {spotlight ? (
                                                     <>
                                                         <p className="text-xs font-medium text-white/50">{spotlight.isFeatured ? 'Layanan unggulan' : spotlight.category}</p>
-                                                        <p className="mt-2 text-lg font-semibold leading-snug">{spotlight.name}</p>
-                                                        {spotlight.excerpt && <p className="mt-2 line-clamp-3 text-sm leading-6 text-white/65">{spotlight.excerpt}</p>}
+                                                        <p className="mt-2 text-base font-semibold leading-snug">{spotlight.name}</p>
+                                                        {spotlight.excerpt && <p className="mt-2 line-clamp-3 text-[13px] leading-5 text-white/65">{spotlight.excerpt}</p>}
                                                         {spotlight.startingPrice !== null && (
-                                                            <p className="mt-4 text-sm text-white/65">
+                                                            <p className="mt-4 text-[13px] text-white/65">
                                                                 Mulai dari <span className="font-semibold text-white">{priceFormatter.format(spotlight.startingPrice)}</span>
                                                             </p>
                                                         )}
                                                         <Link
                                                             href={serviceShow(spotlight.slug)}
-                                                            className="mt-auto inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-white text-sm font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#172F8A]"
+                                                            className="mt-auto inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-white px-3 text-[13px] font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#172F8A]"
                                                         >
                                                             Lihat layanan
                                                             <ArrowRight aria-hidden="true" className="size-4" />
@@ -429,8 +429,8 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                 ) : (
                                                     <>
                                                         <p className="text-xs font-medium text-white/50">Belum tahu mulai dari mana?</p>
-                                                        <p className="mt-2 text-lg font-semibold leading-snug">Ceritakan rencana usaha Anda, kami petakan izinnya.</p>
-                                                        <Link href={consultHref} className="mt-auto inline-flex h-10 items-center justify-center rounded-xl bg-white text-sm font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF]">
+                                                        <p className="mt-2 text-base font-semibold leading-snug">Ceritakan rencana usaha Anda, kami petakan izinnya.</p>
+                                                        <Link href={consultHref} className="mt-auto inline-flex h-10 items-center justify-center rounded-xl bg-white px-3 text-[13px] font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF]">
                                                             Mulai konsultasi
                                                         </Link>
                                                     </>
@@ -439,7 +439,7 @@ export function PublicNavbar({ className }: { className?: string }) {
                                         </div>
 
                                         <div className="border-t border-slate-900/[0.06] bg-slate-900/[0.025]">
-                                            <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-3.5 text-sm">
+                                            <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-3 text-[13px]">
                                                 <Link href={servicesIndex()} className="group inline-flex items-center gap-1.5 rounded-md font-semibold text-[#2547F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
                                                     Lihat semua layanan
                                                     <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5" />
@@ -476,7 +476,7 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                         <h2 id={`tools-group-${group.title}`} className="mb-3 px-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">{group.title}</h2>
                                                         <div className="space-y-1">
                                                             {group.tools.map((tool) => {
-                                                                const content = <><span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#EEF1FF] text-[#2547F9]"><tool.icon aria-hidden="true" className="size-4" /></span><span className="min-w-0 flex-1"><span className="flex items-center justify-between gap-2 text-sm font-semibold text-slate-800">{tool.label}<ArrowRight aria-hidden="true" className="size-3.5 shrink-0 text-[#2547F9]" /></span><span className="mt-0.5 block text-xs leading-4 text-slate-500">{tool.hint}</span></span></>;
+                                                                const content = <><span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#EEF1FF] text-[#2547F9]"><tool.icon aria-hidden="true" className="size-4" /></span><span className="min-w-0 flex-1"><span className="flex items-center justify-between gap-2 text-[13px] font-semibold text-slate-800">{tool.label}<ArrowRight aria-hidden="true" className="size-3.5 shrink-0 text-[#2547F9]" /></span><span className="mt-0.5 block text-[11px] leading-4 text-slate-500">{tool.hint}</span></span></>;
 
                                                                 return tool.external ? <a key={tool.label} href={tool.href} target="_blank" rel="noreferrer noopener" className="flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-slate-900/[0.035]">{content}</a> : <Link key={tool.label} href={tool.href} className="flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-slate-900/[0.035]">{content}</Link>;
                                                             })}
@@ -485,8 +485,8 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                 ))}
                                             </div>
                                             <aside className="flex flex-col justify-between gap-6 border-t border-slate-100 bg-[#F7F8FD] p-5 lg:border-l lg:border-t-0">
-                                                <div><span className="flex size-10 items-center justify-center rounded-xl bg-white text-[#2547F9] shadow-sm"><Search aria-hidden="true" className="size-4" /></span><p className="mt-4 text-base font-semibold text-slate-900">Mulai dari kebutuhan Anda.</p><p className="mt-2 text-sm leading-6 text-slate-500">Semua kalkulator dan pemeriksaan usaha ada di satu tempat.</p></div>
-                                                <Link href={publicToolsIndex()} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#2547F9] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#1E3EDB]">Lihat semua tools <ArrowRight aria-hidden="true" className="size-4" /></Link>
+                                                <div><span className="flex size-10 items-center justify-center rounded-xl bg-white text-[#2547F9] shadow-sm"><Search aria-hidden="true" className="size-4" /></span><p className="mt-4 text-[15px] font-semibold text-slate-900">Mulai dari kebutuhan Anda.</p><p className="mt-2 text-[13px] leading-5 text-slate-500">Semua kalkulator dan pemeriksaan usaha ada di satu tempat.</p></div>
+                                                <Link href={publicToolsIndex()} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#2547F9] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#1E3EDB]">Lihat semua tools <ArrowRight aria-hidden="true" className="size-4" /></Link>
                                             </aside>
                                         </div>
                                     </div>
