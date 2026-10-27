@@ -28,7 +28,7 @@ export function NavFooter({
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton
                                 asChild
-                                className="h-11 gap-3 rounded-lg px-3 text-[15px] font-normal text-neutral-600 [&>svg]:size-[18px] hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
+                                className="h-11 gap-3 rounded-lg px-3 text-[15px] font-normal text-neutral-600 [&>svg]:size-[18px] hover:text-neutral-800"
                             >
                                 <Link href={item.href} prefetch>
                                     {item.icon && (
