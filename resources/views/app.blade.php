@@ -18,6 +18,11 @@
                 background-color: #fff;
                 color-scheme: light;
             }
+
+            html.dark {
+                background-color: #F7F8FD !important;
+                color-scheme: light !important;
+            }
         </style>
 
         <link rel="icon" href="{{ $siteBrand['favicon'] ?? '/images/legalpartner-favicon-192.png' }}">

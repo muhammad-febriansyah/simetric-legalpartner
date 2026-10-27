@@ -60,7 +60,8 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
-:root {
+:root,
+:root.dark {
     color-scheme: light;
     --background: #F7F8FD;
     --foreground: #111827;
