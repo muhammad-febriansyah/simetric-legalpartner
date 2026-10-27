@@ -1,0 +1,4 @@
+{$APP_DOMAIN:legalpartner.id} {
+	encode zstd gzip
+	reverse_proxy web:80
+}
