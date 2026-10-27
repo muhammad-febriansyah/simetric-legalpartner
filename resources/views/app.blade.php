@@ -1,37 +1,27 @@
+@php
+    $siteBrand = $page['props']['siteBrand'] ?? [];
+    $siteName = $siteBrand['siteName'] ?? config('app.name', 'LegalPartner.ID');
+    $metaTitle = $siteBrand['metaTitle'] ?? $siteName;
+    $metaDescription = $siteBrand['metaDescription'] ?? '';
+    $ogImage = $siteBrand['ogImage'] ?? $siteBrand['logo'] ?? '';
+    $ogImageUrl = $ogImage !== ''
+        ? (str_starts_with($ogImage, 'http') ? $ogImage : url($ogImage))
+        : null;
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        {{-- Inline script to detect system dark mode preference and apply it immediately --}}
-        <script>
-            (function() {
-                const appearance = '{{ $appearance ?? "system" }}';
-
-                if (appearance === 'system') {
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-                    if (prefersDark) {
-                        document.documentElement.classList.add('dark');
-                    }
-                }
-            })();
-        </script>
-
-        {{-- Inline style to set the HTML background color based on our theme in app.css --}}
         <style>
             html {
-                background-color: oklch(1 0 0);
-            }
-
-            html.dark {
-                background-color: oklch(0.145 0 0);
+                background-color: #fff;
+                color-scheme: light;
             }
         </style>
 
-        <link rel="icon" href="{{ $page['props']['siteBrand']['favicon'] ?? '/images/legalpartner-favicon-192.png' }}">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" href="{{ $siteBrand['favicon'] ?? '/images/legalpartner-favicon-192.png' }}">
+        <link rel="apple-touch-icon" href="{{ $siteBrand['favicon'] ?? '/images/legalpartner-favicon-192.png' }}">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +30,24 @@
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         <x-inertia::head>
-            <title>{{ config('app.name', 'Laravel') }}</title>
+            <title inertia>{{ $metaTitle }}</title>
+            <meta name="description" content="{{ $metaDescription }}">
+            <meta property="og:type" content="website">
+            <meta property="og:site_name" content="{{ $siteName }}">
+            <meta property="og:title" content="{{ $metaTitle }}">
+            <meta property="og:description" content="{{ $metaDescription }}">
+            <meta property="og:url" content="{{ url()->current() }}">
+            @if ($ogImageUrl)
+                <meta property="og:image" content="{{ $ogImageUrl }}">
+                <meta property="og:image:alt" content="{{ $siteBrand['logoAltText'] ?? $siteName }}">
+            @endif
+            <meta property="og:locale" content="id_ID">
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:title" content="{{ $metaTitle }}">
+            <meta name="twitter:description" content="{{ $metaDescription }}">
+            @if ($ogImageUrl)
+                <meta name="twitter:image" content="{{ $ogImageUrl }}">
+            @endif
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">

@@ -223,12 +223,15 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * @return array{logo: string, favicon: string, logoAltText: string}
+     * @return array{logo: string, favicon: string, logoAltText: string, siteName: string, metaTitle: string, metaDescription: string, ogImage: string}
      */
     private function siteBrand(): array
     {
         $settings = SiteSetting::query()
-            ->whereIn('key', ['logo_path', 'favicon_path', 'logo_alt_text'])
+            ->whereIn('key', [
+                'logo_path', 'favicon_path', 'logo_alt_text', 'site_name', 'site_tagline',
+                'default_meta_title', 'default_meta_description', 'og_image_path',
+            ])
             ->pluck('value', 'key');
 
         $assetUrl = static function (?string $path, string $fallback): string {
@@ -239,10 +242,18 @@ class HandleInertiaRequests extends Middleware
             return str_starts_with($path, '/') ? $path : Storage::disk('public')->url($path);
         };
 
+        $siteName = trim((string) $settings->get('site_name')) ?: 'LegalPartner.ID';
+        $logo = $assetUrl($settings->get('logo_path'), '/images/legalpartner-logo.png');
+
         return [
-            'logo' => $assetUrl($settings->get('logo_path'), '/images/legalpartner-logo.png'),
+            'logo' => $logo,
             'favicon' => $assetUrl($settings->get('favicon_path'), '/images/legalpartner-favicon-192.png'),
             'logoAltText' => $settings->get('logo_alt_text') ?: 'LegalPartner.ID by Simetric Consulting Group',
+            'siteName' => $siteName,
+            'metaTitle' => trim((string) $settings->get('default_meta_title')) ?: $siteName,
+            'metaDescription' => trim((string) $settings->get('default_meta_description'))
+                ?: (trim((string) $settings->get('site_tagline')) ?: 'Layanan legalitas usaha, pendirian badan usaha, perizinan, merek, dan perpajakan dengan proses yang jelas.'),
+            'ogImage' => $assetUrl($settings->get('og_image_path'), $logo),
         ];
     }
 }

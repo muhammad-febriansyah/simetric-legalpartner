@@ -16,6 +16,10 @@ declare module '@inertiajs/core' {
                 logo: string;
                 favicon: string;
                 logoAltText: string;
+                siteName: string;
+                metaTitle: string;
+                metaDescription: string;
+                ogImage: string;
             };
             adminNotifications: {
                 unreadCount: number;
