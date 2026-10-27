@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Support\ArticleSummary;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Response;
 
 class ArticleController extends Controller
@@ -34,6 +35,7 @@ class ArticleController extends Controller
 
         return inertia('public/blog/index', [
             'articles' => $articles,
+            'canonicalUrl' => url('/blog'),
             'categories' => $this->published()
                 ->whereNotNull('category_label')
                 ->selectRaw('category_label as name, count(*) as total')
@@ -64,7 +66,9 @@ class ArticleController extends Controller
                 ...ArticleSummary::from($article),
                 'content' => $article->content,
                 'metaTitle' => $article->meta_title ?: $article->title,
-                'metaDescription' => $article->meta_description ?: $article->excerpt,
+                'metaDescription' => Str::limit(trim((string) ($article->meta_description ?: $article->excerpt ?: strip_tags($article->content))), 160),
+                'canonicalUrl' => url('/blog/'.$article->slug),
+                'updatedAt' => $article->updated_at?->toIso8601String(),
             ],
             'related' => $related,
         ]);

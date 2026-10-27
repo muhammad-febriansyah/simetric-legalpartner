@@ -1,5 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Copy, Facebook, Instagram, Linkedin, MessageCircle } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import { index as blogIndex } from '@/actions/App/Http/Controllers/Site/ArticleController';
 import { index as partnershipIndex } from '@/actions/App/Http/Controllers/Site/PartnershipApplicationController';
 import { index as servicesIndex } from '@/actions/App/Http/Controllers/Site/ServiceController';
@@ -8,21 +10,101 @@ import { ArticleCard, ArticleMeta } from '@/components/article-card';
 import type { ArticleSummary } from '@/components/article-card';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicNavbar } from '@/components/public-navbar';
+import { SocialIcon } from '@/components/social-icons';
 
 type Props = {
-    article: ArticleSummary & { content: string; metaTitle: string; metaDescription: string | null };
+    article: ArticleSummary & {
+        content: string;
+        metaTitle: string;
+        metaDescription: string;
+        canonicalUrl: string;
+        updatedAt: string | null;
+    };
     related: ArticleSummary[];
 };
 
 export default function BlogShow({ article, related }: Props) {
+    const [isCopied, setIsCopied] = useState(false);
+    const encodedUrl = encodeURIComponent(article.canonicalUrl);
+    const encodedTitle = encodeURIComponent(article.metaTitle);
+    const articleSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.metaTitle,
+        description: article.metaDescription,
+        url: article.canonicalUrl,
+        image: article.coverImage ? [article.coverImage] : undefined,
+        datePublished: article.publishedAt ?? undefined,
+        dateModified: article.updatedAt ?? article.publishedAt ?? undefined,
+        articleSection: article.category ?? undefined,
+        author: { '@type': 'Person', name: article.author },
+        publisher: { '@type': 'Organization', name: 'LegalPartner.ID' },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': article.canonicalUrl },
+    };
+
+    async function copyArticleLink(): Promise<void> {
+        try {
+            await navigator.clipboard.writeText(article.canonicalUrl);
+            setIsCopied(true);
+            toast.success('Tautan artikel disalin');
+            window.setTimeout(() => setIsCopied(false), 1800);
+        } catch {
+            toast.error('Tautan belum dapat disalin', {
+                description: 'Salin alamat halaman dari bilah alamat browser.',
+            });
+        }
+    }
+
+    async function shareToSocialApps(): Promise<void> {
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: article.metaTitle,
+                    text: article.metaDescription,
+                    url: article.canonicalUrl,
+                });
+
+                return;
+            }
+
+            await navigator.clipboard.writeText(article.canonicalUrl);
+            toast.success('Tautan artikel disalin', {
+                description: 'Tempel tautan ke Instagram atau TikTok.',
+            });
+        } catch (error) {
+            if (error instanceof DOMException && error.name === 'AbortError') {
+                return;
+            }
+
+            toast.error('Tautan belum dapat dibagikan', {
+                description: 'Salin alamat halaman dari bilah alamat browser.',
+            });
+        }
+    }
+
     return (
         <>
             <Head title={article.metaTitle}>
-                {article.metaDescription && <meta name="description" content={article.metaDescription} />}
+                <meta name="description" content={article.metaDescription} />
+                <link rel="canonical" href={article.canonicalUrl} />
                 <meta property="og:type" content="article" />
+                <meta property="og:site_name" content="LegalPartner.ID" />
                 <meta property="og:title" content={article.metaTitle} />
-                {article.metaDescription && <meta property="og:description" content={article.metaDescription} />}
-                {article.coverImage && <meta property="og:image" content={article.coverImage} />}
+                <meta property="og:description" content={article.metaDescription} />
+                <meta property="og:url" content={article.canonicalUrl} />
+                {article.coverImage && <>
+                    <meta property="og:image" content={article.coverImage} />
+                    <meta property="og:image:alt" content={article.coverAlt || article.metaTitle} />
+                    <meta name="twitter:image" content={article.coverImage} />
+                </>}
+                {article.publishedAt && <meta property="article:published_time" content={article.publishedAt} />}
+                {article.updatedAt && <meta property="article:modified_time" content={article.updatedAt} />}
+                {article.author && <meta property="article:author" content={article.author} />}
+                {article.category && <meta property="article:section" content={article.category} />}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={article.metaTitle} />
+                <meta name="twitter:description" content={article.metaDescription} />
+                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/</g, '\\u003c') }} />
             </Head>
             <PublicNavbar />
             <main className="min-h-screen bg-[#F7F8FD] text-slate-900">
@@ -48,6 +130,30 @@ export default function BlogShow({ article, related }: Props) {
                                     {article.author.replace(/[^A-Za-z ]/g, '').trim().split(' ').slice(0, 2).map((part) => part[0]).join('')}
                                 </span>
                                 <ArticleMeta article={article} className="text-sm" />
+                            </div>
+                            <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5" aria-label="Bagikan artikel">
+                                <span className="mr-1 text-xs font-semibold text-slate-500">Bagikan</span>
+                                <a href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`} target="_blank" rel="noreferrer noopener" aria-label="Bagikan lewat WhatsApp" title="WhatsApp" className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                    <MessageCircle aria-hidden="true" className="size-4" />
+                                </a>
+                                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`} target="_blank" rel="noreferrer noopener" aria-label="Bagikan lewat Facebook" title="Facebook" className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                    <Facebook aria-hidden="true" className="size-4" />
+                                </a>
+                                <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`} target="_blank" rel="noreferrer noopener" aria-label="Bagikan lewat LinkedIn" title="LinkedIn" className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-sky-200 hover:bg-sky-50 hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                    <Linkedin aria-hidden="true" className="size-4" />
+                                </a>
+                                <a href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`} target="_blank" rel="noreferrer noopener" aria-label="Bagikan lewat X" title="X" className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                    <span aria-hidden="true" className="text-sm font-semibold">𝕏</span>
+                                </a>
+                                <button type="button" onClick={shareToSocialApps} aria-label="Bagikan artikel ke Instagram melalui menu berbagi" title="Instagram" className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-pink-200 hover:bg-pink-50 hover:text-pink-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                    <Instagram aria-hidden="true" className="size-4" />
+                                </button>
+                                <button type="button" onClick={shareToSocialApps} aria-label="Bagikan artikel ke TikTok melalui menu berbagi" title="TikTok" className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                    <SocialIcon name="tiktok" className="size-4" />
+                                </button>
+                                <button type="button" onClick={copyArticleLink} aria-label={isCopied ? 'Tautan disalin' : 'Salin tautan artikel'} title="Salin tautan" className="inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:border-[#2547F9]/30 hover:bg-[#2547F9]/[0.05] hover:text-[#2547F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                    {isCopied ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />}
+                                </button>
                             </div>
                         </div>
                     </header>

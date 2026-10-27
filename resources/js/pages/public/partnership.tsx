@@ -137,67 +137,69 @@ export default function Partnership({
                 <PublicNavbar />
 
                 <main>
-                    <section className="relative isolate overflow-hidden bg-white">
-                        <div className="absolute inset-y-0 right-0 -z-10 hidden w-[48%] bg-gradient-to-bl from-blue-50 via-indigo-50/70 to-white lg:block" />
-                        <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-24">
-                            <div>
-                                <div className="inline-flex items-center gap-2 rounded-full border border-[#2547F9]/15 bg-[#2547F9]/[0.06] px-3.5 py-2 text-sm font-medium text-[#2547F9]">
-                                    <Handshake className="size-4" /> Program kemitraan
-                                    LegalPartner.ID
+                    <section className="relative isolate overflow-hidden bg-[#F8F9FE]">
+                        <div aria-hidden="true" className="absolute inset-y-0 right-0 -z-10 hidden w-[46%] bg-gradient-to-br from-[#EEF2FF] via-[#F5F7FF] to-[#F8F9FE] lg:block" />
+                        <div aria-hidden="true" className="absolute -right-24 top-20 -z-10 hidden size-80 rounded-full bg-[#2547F9]/[0.045] blur-3xl lg:block" />
+                        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:py-20">
+                            <div className="lg:py-6">
+                                <div className="inline-flex items-center gap-2 rounded-full border border-[#2547F9]/15 bg-white/80 px-3.5 py-2 text-xs font-semibold text-[#2547F9] shadow-sm shadow-blue-950/[0.03] sm:text-sm">
+                                    <Handshake aria-hidden="true" className="size-4" />
+                                    Program kemitraan
                                 </div>
-                                <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-[1.12] tracking-tight text-slate-950 sm:text-5xl lg:text-[3.5rem]">
+                                <h1 className="mt-6 max-w-2xl text-[2.65rem] font-semibold leading-[1.06] tracking-[-0.045em] text-slate-950 [text-wrap:balance] sm:text-5xl lg:mt-7 lg:text-[3.8rem]">
                                     Bangun kolaborasi legal yang{" "}
                                     <span className="text-[#2547F9]">berdampak.</span>
                                 </h1>
-                                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                                    Kami membuka kerja sama dengan profesional dan pelaku usaha yang
-                                    membantu bisnis Indonesia tumbuh dengan fondasi legal yang kuat.
+                                <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:mt-6 sm:text-lg sm:leading-8">
+                                    Kami bermitra dengan profesional dan pelaku usaha untuk membantu
+                                    bisnis mendapatkan layanan legalitas yang tepat.
                                 </p>
-                                <div className="mt-8 flex flex-wrap items-center gap-3">
+                                <div className="mt-7 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:items-center sm:mt-8">
                                     <Button
                                         asChild
                                         size="lg"
-                                        className="bg-[#2547F9] text-white hover:bg-[#1E3EDB]"
+                                        className="h-12 w-full bg-[#2547F9] px-5 text-sm text-white shadow-[0_8px_20px_-10px_rgba(37,71,249,0.65)] hover:bg-[#1E3EDB] min-[420px]:w-auto"
                                     >
                                         <a href="#form-pendaftaran">
                                             Mulai ajukan kerja sama{" "}
-                                            <ArrowRight data-icon="inline-end" />
+                                            <ArrowRight aria-hidden="true" data-icon="inline-end" />
                                         </a>
                                     </Button>
                                     <a
                                         href="#kategori"
-                                        className="inline-flex h-11 items-center gap-2 rounded-lg px-4 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
+                                        className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-slate-600 transition-colors hover:bg-white hover:text-slate-900 min-[420px]:justify-start"
                                     >
-                                        Lihat kategori <ArrowDown className="size-4" />
+                                        Lihat kategori <ArrowDown aria-hidden="true" className="size-4" />
                                     </a>
                                 </div>
-                                <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-slate-100 pt-6 text-sm text-slate-600">
-                                    <span className="inline-flex items-center gap-2">
-                                        <ShieldCheck className="size-4 text-emerald-600" /> Ditinjau
-                                        tim partnership
+                                <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-slate-200/80 pt-5 text-xs font-medium text-slate-600 sm:mt-10 sm:gap-x-7 sm:pt-6 sm:text-sm">
+                                    <span className="inline-flex items-center gap-2.5">
+                                        <ShieldCheck aria-hidden="true" className="size-4 shrink-0 text-emerald-600" />
+                                        Ditinjau tim partnership
                                     </span>
-                                    <span className="inline-flex items-center gap-2">
-                                        <MessageCircle className="size-4 text-emerald-600" /> Tindak
-                                        lanjut personal
+                                    <span className="inline-flex items-center gap-2.5">
+                                        <MessageCircle aria-hidden="true" className="size-4 shrink-0 text-emerald-600" />
+                                        Tindak lanjut personal
                                     </span>
                                 </div>
                             </div>
 
-                            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-blue-950/[0.06] sm:p-7">
+                            <div className="relative rounded-[1.75rem] border border-white bg-white p-5 shadow-[0_22px_55px_-38px_rgba(15,23,42,0.35)] ring-1 ring-slate-200/70 sm:p-7 lg:p-8">
                                 <div className="flex items-start justify-between gap-4">
-                                    <div>
-                                        <p className="text-sm font-medium text-[#2547F9]">
-                                            Kolaborasi yang jelas
+                                    <div className="min-w-0">
+                                        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#2547F9]">
+                                            Alur kemitraan
                                         </p>
-                                        <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                                        <h2 className="mt-2 max-w-sm text-xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-2xl">
                                             Dari perkenalan hingga kerja sama
                                         </h2>
                                     </div>
-                                    <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#2547F9]/[0.08] text-[#2547F9]">
-                                        <Handshake className="size-6" />
+                                    <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#2547F9] sm:size-12">
+                                        <Handshake aria-hidden="true" className="size-5 sm:size-6" />
                                     </span>
                                 </div>
-                                <div className="mt-7 grid gap-3">
+                                <div className="relative mt-6 grid gap-1 sm:mt-7">
+                                    <div aria-hidden="true" className="absolute bottom-8 left-[1.125rem] top-8 w-px bg-gradient-to-b from-[#2547F9]/30 via-[#2547F9]/15 to-transparent" />
                                     {[
                                         [
                                             "01",
@@ -217,13 +219,13 @@ export default function Partnership({
                                     ].map(([number, title, description]) => (
                                         <div
                                             key={number}
-                                            className="flex gap-4 rounded-2xl bg-[#F7F8FD] p-4"
+                                            className="relative flex gap-3.5 rounded-2xl px-2.5 py-3.5 transition-colors hover:bg-[#F8F9FE] sm:gap-4 sm:px-3 sm:py-4"
                                         >
-                                            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white text-xs font-semibold text-[#2547F9] shadow-sm">
+                                            <span className="z-10 flex size-9 shrink-0 items-center justify-center rounded-xl border border-[#2547F9]/15 bg-white text-xs font-semibold tabular-nums text-[#2547F9] shadow-[0_2px_6px_-3px_rgba(15,23,42,0.2)]">
                                                 {number}
                                             </span>
-                                            <div>
-                                                <p className="text-sm font-semibold">{title}</p>
+                                            <div className="min-w-0 pt-0.5">
+                                                <p className="text-sm font-semibold leading-5 text-slate-900">{title}</p>
                                                 <p className="mt-1 text-sm leading-5 text-slate-500">
                                                     {description}
                                                 </p>
@@ -231,9 +233,9 @@ export default function Partnership({
                                         </div>
                                     ))}
                                 </div>
-                                <div className="mt-5 flex items-center gap-2 text-xs text-slate-500">
-                                    <BadgeCheck className="size-4 text-emerald-600" /> Pengajuan
-                                    ditinjau oleh tim, bukan otomatis disetujui.
+                                <div className="mt-4 flex items-start gap-2.5 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-500 sm:mt-5 sm:pt-5">
+                                    <BadgeCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-emerald-600" />
+                                    <span>Setiap pengajuan ditinjau tim sebelum skema kerja sama dibahas.</span>
                                 </div>
                             </div>
                         </div>

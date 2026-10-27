@@ -19,6 +19,7 @@ type PaginatedArticles = {
 
 type Props = {
     articles: PaginatedArticles;
+    canonicalUrl: string;
     categories: { name: string; total: number }[];
     filters: { q: string; kategori: string };
 };
@@ -30,7 +31,7 @@ const chipClass = (isActive: boolean) =>
             : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950'
     }`;
 
-export default function BlogIndex({ articles, categories, filters }: Props) {
+export default function BlogIndex({ articles, canonicalUrl, categories, filters }: Props) {
     const [query, setQuery] = useState(filters.q);
     const hasFilters = filters.q !== '' || filters.kategori !== '';
     const showFeatured = !hasFilters && articles.current_page === 1 && articles.data.length > 0;
@@ -48,6 +49,15 @@ export default function BlogIndex({ articles, categories, filters }: Props) {
         <>
             <Head title="Blog">
                 <meta name="description" content="Panduan dan wawasan seputar pendirian usaha, perizinan, merek, dan perpajakan dari tim LegalPartner.ID." />
+                <link rel="canonical" href={canonicalUrl} />
+                <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="LegalPartner.ID" />
+                <meta property="og:title" content="Blog LegalPartner.ID — Panduan Legalitas Usaha" />
+                <meta property="og:description" content="Panduan praktis seputar pendirian badan usaha, perizinan, merek, dan pajak." />
+                <meta property="og:url" content={canonicalUrl} />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Blog LegalPartner.ID — Panduan Legalitas Usaha" />
+                <meta name="twitter:description" content="Panduan praktis seputar pendirian badan usaha, perizinan, merek, dan pajak." />
             </Head>
             <PublicNavbar />
             <main className="min-h-screen bg-[#F7F8FD] text-slate-900">

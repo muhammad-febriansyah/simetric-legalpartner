@@ -615,7 +615,7 @@ export function PublicNavbar({ className }: { className?: string }) {
             </Dialog>
 
             <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
-                <SheetContent side="right" onOpenAutoFocus={(event) => event.preventDefault()} className="w-[88%] max-w-sm gap-0 overflow-hidden bg-white p-0 xl:hidden">
+                <SheetContent side="right" className="w-[88%] max-w-sm gap-0 overflow-hidden border-l border-slate-200/80 bg-white p-0 shadow-[-24px_0_60px_-32px_rgba(15,23,42,0.35)] xl:hidden">
                     <SheetHeader className="border-b border-slate-100 p-4 pr-14">
                         <SheetTitle className="sr-only">Menu</SheetTitle>
                         <SheetDescription className="sr-only">Navigasi utama LegalPartner.ID</SheetDescription>
@@ -702,17 +702,56 @@ export function PublicNavbar({ className }: { className?: string }) {
                                 <Link href={kbliIndex()} className="block rounded-xl px-3 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50">Database KBLI</Link>
                                 <Link href={aboutShow()} className="block rounded-xl px-3 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50">Tentang kami</Link>
                                 <Link href={contactShow()} className="block rounded-xl px-3 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50">Kontak kami</Link>
-                                <div className="px-3 py-3 text-sm font-medium text-slate-800">
-                                    Tools gratis
-                                    <ul className="mt-2 space-y-1.5">
-                                        {freeTools.map((tool) => (
-                                            <li key={tool.label} className="flex items-center justify-between text-sm font-normal text-slate-500">
-                                                {tool.external ? <a href={tool.href} target="_blank" rel="noreferrer noopener" className="font-medium text-[#2547F9]">{tool.label}</a> : <Link href={tool.href} className="font-medium text-[#2547F9]">{tool.label}</Link>}
-                                                <ArrowRight aria-hidden="true" className="size-3.5 text-[#2547F9]" />
-                                            </li>
+                                <section className="mt-3 overflow-hidden rounded-2xl border border-[#2547F9]/10 bg-gradient-to-b from-[#F7F8FF] to-white p-3.5" aria-labelledby="mobile-tools-title">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2547F9]">Bisa langsung digunakan</p>
+                                            <h2 id="mobile-tools-title" className="mt-1 text-base font-semibold text-slate-900">Tools gratis</h2>
+                                        </div>
+                                        <span className="rounded-full border border-[#2547F9]/10 bg-white px-2 py-1 text-[10px] font-semibold text-slate-500">{freeTools.length} tools</span>
+                                    </div>
+
+                                    <div className="mt-4 space-y-4">
+                                        {freeToolGroups.map((group) => (
+                                            <section key={group.title} aria-label={group.title}>
+                                                <h3 className="mb-1.5 border-b border-slate-200/80 pb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">{group.title}</h3>
+                                                <ul className="space-y-1">
+                                                    {group.tools.map((tool) => {
+                                                        const ToolIcon = tool.icon;
+                                                        const linkClass = 'group flex min-h-14 items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-white hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]';
+                                                        const content = (
+                                                            <>
+                                                                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#2547F9]/[0.08] text-[#2547F9] transition-colors group-hover:bg-[#2547F9] group-hover:text-white">
+                                                                    <ToolIcon aria-hidden="true" className="size-4" />
+                                                                </span>
+                                                                <span className="min-w-0 flex-1">
+                                                                    <span className="block text-[13px] font-semibold leading-5 text-slate-800">{tool.label}</span>
+                                                                    <span className="mt-0.5 block text-[11px] leading-4 text-slate-500">{tool.hint}</span>
+                                                                </span>
+                                                                <ArrowRight aria-hidden="true" className="size-4 shrink-0 text-slate-300 transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-[#2547F9]" />
+                                                            </>
+                                                        );
+
+                                                        return (
+                                                            <li key={tool.label}>
+                                                                {tool.external ? (
+                                                                    <a href={tool.href} target="_blank" rel="noreferrer noopener" className={linkClass}>{content}</a>
+                                                                ) : (
+                                                                    <Link href={tool.href} className={linkClass}>{content}</Link>
+                                                                )}
+                                                            </li>
+                                                        );
+                                                    })}
+                                                </ul>
+                                            </section>
                                         ))}
-                                    </ul>
-                                </div>
+                                    </div>
+
+                                    <Link href={publicToolsIndex()} className="mt-3 flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#2547F9]/15 bg-white px-3 text-xs font-semibold text-[#2547F9] transition-colors hover:bg-[#2547F9]/[0.05]">
+                                        Lihat semua tools
+                                        <ArrowRight aria-hidden="true" className="size-3.5" />
+                                    </Link>
+                                </section>
                             </>
                         )}
                     </div>
