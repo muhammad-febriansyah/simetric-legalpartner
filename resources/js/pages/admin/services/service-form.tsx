@@ -141,6 +141,7 @@ export default function ServiceForm({
     const [name, setName] = useState(service?.name ?? '');
     const [slug, setSlug] = useState(service?.slug ?? '');
     const [slugIsManuallyEdited, setSlugIsManuallyEdited] = useState(false);
+    const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
 
     function slugify(value: string): string {
         return value
@@ -179,6 +180,7 @@ export default function ServiceForm({
                     method="post"
                     options={{ preserveScroll: true }}
                     encType="multipart/form-data"
+                    transform={(data) => heroImageFile ? { ...data, hero_image_file: heroImageFile } : data}
                     className="flex flex-col gap-6"
                     onSuccess={() => toast.success(isEditing ? 'Layanan berhasil diperbarui.' : 'Layanan berhasil dibuat.')}
                     onError={() => toast.error('Layanan belum tersimpan. Periksa kolom yang ditandai.')}
@@ -233,6 +235,7 @@ export default function ServiceForm({
                                         hint="PNG, JPG, atau WebP · maks. 3 MB"
                                         currentImage={service?.heroImage ?? null}
                                         error={errors.hero_image_file}
+                                        onFileChange={setHeroImageFile}
                                     />
                                     <TextField id="hero_image_alt" label="Teks alternatif gambar" value={service?.heroImageAlt} error={errors.hero_image_alt} placeholder="Deskripsi singkat gambar" />
                                 </div>
