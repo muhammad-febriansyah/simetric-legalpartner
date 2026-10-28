@@ -1,7 +1,7 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import { ArrowLeft, CircleHelp, FileText, Globe2, Image as ImageIcon, ListChecks, PackageCheck, Save } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { create as createService, index as adminServicesIndex, store as storeService, update as updateService } from '@/actions/App/Http/Controllers/Admin/ServiceController';
 import { index as servicePackagesIndex } from '@/actions/App/Http/Controllers/Admin/ServicePackageController';
@@ -138,36 +138,9 @@ export default function ServiceForm({
 }) {
     const isEditing = service !== null;
     const action = isEditing ? updateService.url(service.id) : storeService.url();
-    const { errors } = usePage<{ errors: Record<string, string> }>().props;
     const [name, setName] = useState(service?.name ?? '');
     const [slug, setSlug] = useState(service?.slug ?? '');
     const [slugIsManuallyEdited, setSlugIsManuallyEdited] = useState(false);
-    const [processing, setProcessing] = useState(false);
-
-    function submitForm(event: FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-
-        const form = event.currentTarget;
-        const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content;
-
-        if (!csrfToken) {
-            toast.error('Token keamanan tidak ditemukan. Muat ulang halaman lalu coba lagi.');
-            return;
-        }
-
-        let csrfInput = form.querySelector<HTMLInputElement>('input[name="_token"]');
-
-        if (!csrfInput) {
-            csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_token';
-            form.append(csrfInput);
-        }
-
-        csrfInput.value = csrfToken;
-        setProcessing(true);
-        HTMLFormElement.prototype.submit.call(form);
-    }
 
     function slugify(value: string): string {
         return value
@@ -201,8 +174,17 @@ export default function ServiceForm({
                     description={isEditing ? 'Perbarui informasi dan tampilan layanan untuk pengunjung.' : 'Isi informasi layanan. Kamu bisa melengkapi paket dan FAQ setelah layanan dibuat.'}
                 />
 
-                <form action={action} method="post" encType="multipart/form-data" onSubmit={submitForm} className="flex flex-col gap-6">
-                    {isEditing && <input type="hidden" name="_method" value="put" />}
+                <Form
+                    action={action}
+                    method={isEditing ? 'put' : 'post'}
+                    options={{ preserveScroll: true }}
+                    encType="multipart/form-data"
+                    className="flex flex-col gap-6"
+                    onSuccess={() => toast.success(isEditing ? 'Layanan berhasil diperbarui.' : 'Layanan berhasil dibuat.')}
+                    onError={() => toast.error('Layanan belum tersimpan. Periksa kolom yang ditandai.')}
+                >
+                    {({ processing, errors }) => (
+                        <>
                             <section className="flex flex-col gap-5 rounded-2xl border border-border bg-white p-5 shadow-sm shadow-slate-900/[0.02] sm:p-6">
                                 <SectionHeading icon={Globe2} title="Informasi layanan" description="Identitas dan ringkasan yang tampil di halaman katalog." />
                                 <div className="grid gap-4 md:grid-cols-2">
@@ -316,7 +298,9 @@ export default function ServiceForm({
                                     {processing ? 'Menyimpan…' : isEditing ? 'Simpan perubahan' : 'Simpan layanan'}
                                 </Button>
                             </div>
-                </form>
+                        </>
+                    )}
+                </Form>
             </div>
         </>
     );
