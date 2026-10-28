@@ -97,12 +97,6 @@ const popoverClass = `rounded-2xl border border-slate-900/[0.08] bg-white/95 ${g
 const navItemClass =
     'group/nav relative inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-md px-3 text-sm font-medium text-slate-700 transition-colors hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] aria-expanded:text-slate-950 after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[#2547F9] after:transition-transform after:duration-200 hover:after:scale-x-100 aria-expanded:after:scale-x-100 aria-[current=page]:text-[#2547F9] aria-[current=page]:after:scale-x-100';
 
-const priceFormatter = new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    maximumFractionDigits: 0,
-});
-
 function formatWhatsapp(number: string): string {
     if (!number.startsWith('62') || number.length < 10) {
         return `+${number}`;
@@ -260,14 +254,6 @@ export function PublicNavbar({ className }: { className?: string }) {
         return Array.from(groups.entries());
     }, [searchResults]);
 
-    const spotlight = useMemo(() => {
-        const services = serviceMenu.flatMap((category) =>
-            category.services.map((service) => ({ ...service, category: category.name })),
-        );
-
-        return services.find((service) => service.isFeatured) ?? services[0] ?? null;
-    }, [serviceMenu]);
-
     const isActive = (path: string) => url === path || url.startsWith(`${path}/`) || url.startsWith(`${path}?`);
     const blogHref = blogIndex().url;
     const consultHref = `${partnershipIndex().url}#form-pendaftaran`;
@@ -364,33 +350,33 @@ export function PublicNavbar({ className }: { className?: string }) {
                                 {openMenu === 'services' && (
                                     <div
                                         id="mega-services"
-                                        className={`absolute inset-x-0 top-full border-b border-slate-900/[0.08] bg-white/95 shadow-[0_32px_60px_-28px_rgba(15,23,42,0.35)] animate-in fade-in-0 slide-in-from-top-1 duration-200 ${glassBlur}`}
+                                        className={`absolute inset-x-0 top-full max-h-[calc(100vh-6rem)] overflow-y-auto border-b border-slate-900/[0.08] bg-white/95 shadow-[0_32px_60px_-28px_rgba(15,23,42,0.35)] animate-in fade-in-0 slide-in-from-top-1 duration-200 motion-reduce:animate-none ${glassBlur}`}
                                     >
-                                        <div className="mx-auto grid max-w-7xl grid-cols-[1fr_19rem] gap-10 px-8 pb-7 pt-8">
-                                            <div className="columns-4 gap-x-6">
+                                        <div className="mx-auto max-w-7xl px-5 py-6 sm:px-8 sm:py-7">
+                                            <div className="columns-1 gap-x-5 sm:columns-2 xl:columns-4">
                                                 {serviceMenu.map((category) => {
                                                     const CategoryIcon = categoryIcon(category.slug);
 
                                                     return (
-                                                        <div key={category.slug} className="mb-7 break-inside-avoid">
-                                                            <div className="flex items-center gap-2.5 px-2.5">
-                                                                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#2547F9]/[0.08] text-[#2547F9]">
-                                                                    <CategoryIcon aria-hidden="true" className="size-4" />
+                                                        <section key={category.slug} className="mb-5 break-inside-avoid">
+                                                            <div className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#FFE47A] px-3 py-2.5 sm:px-3.5">
+                                                                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#2547F9] shadow-sm">
+                                                                    <CategoryIcon aria-hidden="true" className="size-5" />
                                                                 </span>
-                                                                <p className="text-[11px] font-semibold uppercase leading-tight tracking-[0.08em] text-slate-500">{category.name}</p>
+                                                                <h2 className="text-[12px] font-bold uppercase leading-snug tracking-[0.075em] text-slate-900 sm:text-[13px]">{category.name}</h2>
                                                             </div>
-                                                            <ul className="mt-3 space-y-0.5 border-t border-slate-900/[0.06] pt-3">
+                                                            <ul className="mt-2.5 space-y-0.5">
                                                                 {category.services.length > 0 ? (
                                                                     category.services.map((service) => (
                                                                         <li key={service.slug}>
                                                                             <Link
                                                                                 href={serviceShow(service.slug)}
-                                                                                className="block rounded-lg px-2.5 py-2 transition-colors hover:bg-[#2547F9]/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]"
+                                                                                className="block rounded-lg px-2.5 py-2.5 transition-colors hover:bg-[#2547F9]/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]"
                                                                             >
                                                                                 <span className="flex items-start justify-between gap-2">
-                                                                                    <span className="text-[13px] font-medium leading-snug text-slate-800">{service.name}</span>
+                                                                                    <span className="text-[14px] font-medium leading-snug text-slate-800">{service.name}</span>
                                                                                     {service.isFeatured && (
-                                                                                        <span className="mt-0.5 shrink-0 rounded-full bg-[#2547F9]/10 px-1.5 py-0.5 text-[10px] font-semibold text-[#2547F9]">
+                                                                                        <span className="mt-0.5 shrink-0 rounded-full bg-[#EEF1FF] px-2 py-1 text-[10px] font-semibold text-[#2547F9]">
                                                                                             Terlaris
                                                                                         </span>
                                                                                     )}
@@ -399,47 +385,17 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                                         </li>
                                                                     ))
                                                                 ) : (
-                                            <li className="px-2.5 py-2 text-[13px] text-slate-400">Segera hadir</li>
+                                                                    <li className="px-2.5 py-2 text-[13px] text-slate-400">Segera hadir</li>
                                                                 )}
                                                             </ul>
-                                                        </div>
+                                                        </section>
                                                     );
                                                 })}
                                             </div>
-
-                                            <aside className="flex flex-col rounded-2xl bg-[#172F8A] p-6 text-white">
-                                                {spotlight ? (
-                                                    <>
-                                                        <p className="text-xs font-medium text-white/50">{spotlight.isFeatured ? 'Layanan unggulan' : spotlight.category}</p>
-                                                        <p className="mt-2 text-base font-semibold leading-snug">{spotlight.name}</p>
-                                                        {spotlight.excerpt && <p className="mt-2 line-clamp-3 text-[13px] leading-5 text-white/65">{spotlight.excerpt}</p>}
-                                                        {spotlight.startingPrice !== null && (
-                                                            <p className="mt-4 text-[13px] text-white/65">
-                                                                Mulai dari <span className="font-semibold text-white">{priceFormatter.format(spotlight.startingPrice)}</span>
-                                                            </p>
-                                                        )}
-                                                        <Link
-                                                            href={serviceShow(spotlight.slug)}
-                                                            className="mt-auto inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-white px-3 text-[13px] font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#172F8A]"
-                                                        >
-                                                            Lihat layanan
-                                                            <ArrowRight aria-hidden="true" className="size-4" />
-                                                        </Link>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <p className="text-xs font-medium text-white/50">Belum tahu mulai dari mana?</p>
-                                                        <p className="mt-2 text-base font-semibold leading-snug">Ceritakan rencana usaha Anda, kami petakan izinnya.</p>
-                                                        <Link href={consultHref} className="mt-auto inline-flex h-10 items-center justify-center rounded-xl bg-white px-3 text-[13px] font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF]">
-                                                            Mulai konsultasi
-                                                        </Link>
-                                                    </>
-                                                )}
-                                            </aside>
                                         </div>
 
                                         <div className="border-t border-slate-900/[0.06] bg-slate-900/[0.025]">
-                                            <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-3 text-[13px]">
+                                            <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-3 text-[13px] sm:flex-row sm:items-center sm:justify-between sm:px-8">
                                                 <Link href={servicesIndex()} className="group inline-flex items-center gap-1.5 rounded-md font-semibold text-[#2547F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
                                                     Lihat semua layanan
                                                     <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5" />
