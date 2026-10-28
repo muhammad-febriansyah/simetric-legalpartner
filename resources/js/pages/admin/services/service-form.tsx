@@ -149,15 +149,16 @@ export default function ServiceForm({
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
+        const formValues = Object.fromEntries(formData.entries());
 
         if (heroImageFile) {
-            formData.set('hero_image_file', heroImageFile);
+            formValues.hero_image_file = heroImageFile;
         }
 
         setProcessing(true);
         setErrors({});
 
-        router.post(action, formData, {
+        router.post(action, formValues, {
             forceFormData: true,
             preserveScroll: true,
             onSuccess: () => toast.success(isEditing ? 'Layanan berhasil diperbarui.' : 'Layanan berhasil dibuat.'),
