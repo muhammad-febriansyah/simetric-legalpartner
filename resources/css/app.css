@@ -2,10 +2,49 @@
 
 @import 'tw-animate-css';
 
+@custom-variant dark (&:is(.dark *));
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 @theme {
+    --animate-shiny-text: shiny-text 8s infinite;
+    --animate-marquee: marquee var(--duration) infinite linear;
+    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+    @keyframes shiny-text {
+        0%,
+        90%,
+        100% {
+            background-position: calc(-100% - var(--shiny-width)) 0;
+        }
+
+        30%,
+        60% {
+            background-position: calc(100% + var(--shiny-width)) 0;
+        }
+    }
+
+    @keyframes marquee {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(calc(-100% - var(--gap)));
+        }
+    }
+
+    @keyframes marquee-vertical {
+        from {
+            transform: translateY(0);
+        }
+
+        to {
+            transform: translateY(calc(-100% - var(--gap)));
+        }
+    }
+
     --font-sans:
         'Poppins', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
@@ -99,6 +138,16 @@
     --sidebar-ring: #1345AD;
 }
 
+@layer utilities {
+    .animate-marquee {
+        animation: marquee var(--duration, 40s) infinite linear;
+    }
+
+    .animate-marquee-vertical {
+        animation: marquee-vertical var(--duration, 40s) linear infinite;
+    }
+}
+
 @layer base {
     * {
         @apply border-border;
@@ -108,3 +157,4 @@
         @apply bg-background text-foreground;
     }
 }
+

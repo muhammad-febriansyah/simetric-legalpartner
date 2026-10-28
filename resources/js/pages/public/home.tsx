@@ -15,7 +15,7 @@ import {
     Sparkles,
     Workflow,
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { show as aboutShow } from '@/actions/App/Http/Controllers/Site/AboutPageController';
 import { index as blogIndex } from '@/actions/App/Http/Controllers/Site/ArticleController';
@@ -25,6 +25,8 @@ import { ArticleCard } from '@/components/article-card';
 import type { ArticleSummary } from '@/components/article-card';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicNavbar } from '@/components/public-navbar';
+import { AnimatedShinyText } from '@/components/ui/animated-shiny-text';
+import { Marquee } from '@/components/ui/marquee';
 import { categoryIcon } from '@/lib/category-icons';
 
 type FeaturedService = {
@@ -70,6 +72,7 @@ const avatarColors = ['bg-[#2547F9]', 'bg-slate-900', 'bg-sky-500'];
 
 export default function Home({ featured, categories, partners, articles, faqs, stats }: Props) {
     const { props } = usePage<{ siteContact: { whatsapp: string | null } }>();
+    const shouldReduceMotion = useReducedMotion();
     const spotlight = featured.find((service) => service.slug === 'pt-perorangan') ?? featured[1] ?? featured[0];
     const teamInitials = [...new Set(articles.map((article) => article.author.replace(/,.*$/, '').trim()))]
         .slice(0, 3)
@@ -92,6 +95,13 @@ export default function Home({ featured, categories, partners, articles, faqs, s
         { icon: Handshake, value: partners.length, label: 'Jaringan mitra' },
         { icon: BookOpen, value: stats.articles, label: 'Panduan di blog' },
     ];
+
+    const sectionReveal = {
+        initial: shouldReduceMotion ? false : { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.12 },
+        transition: { duration: 0.65, ease: 'easeOut' },
+    };
 
     useEffect(() => {
         const carousel = categoriesCarouselRef.current;
@@ -130,14 +140,21 @@ export default function Home({ featured, categories, partners, articles, faqs, s
             <PublicNavbar />
             <main className="bg-white text-slate-900">
                 <div className="bg-[#F7F8FD]">
-                    <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-10 pt-10 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-12 lg:pt-14">
+                    <motion.section
+                        initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, ease: 'easeOut' }}
+                        className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-10 pt-10 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-12 lg:pt-14"
+                    >
                         <div>
                             <p className="inline-flex items-center gap-2 rounded-full border border-[#2547F9]/15 bg-white px-3.5 py-1.5 text-xs font-medium text-[#2547F9]">
                                 <Sparkles aria-hidden="true" className="size-3.5" />
-                                Solusi Tuntas Legalitas &amp; Perizinan
+                                <AnimatedShinyText className="inline-flex items-center text-[#2547F9]" shimmerWidth={80}>
+                                    Solusi Tuntas Legalitas &amp; Perizinan
+                                </AnimatedShinyText>
                             </p>
-                            <h1 className="mt-6 text-[2.15rem] font-semibold leading-[1.12] tracking-tight text-slate-950 sm:text-5xl">
-                                <span className="block">Anda Fokus Bangun Usaha,</span>
+                            <h1 className="mt-6 text-[1.9rem] font-semibold leading-[1.12] tracking-tight text-slate-950 sm:text-[2.55rem]">
+                                <span className="block lg:whitespace-nowrap">Anda Fokus Bangun Usaha,</span>
                                 <span className="block text-[#2547F9]">Legalitas dan Perizinan</span>
                                 <span className="block text-[#2547F9]">Serahkan kepada Kami.</span>
                             </h1>
@@ -222,9 +239,9 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 </span>
                             </Link>
                         </div>
-                    </section>
+                    </motion.section>
 
-                    <section aria-label="Ringkasan layanan" className="mx-auto max-w-7xl px-5 sm:px-8">
+                    <motion.section aria-label="Ringkasan layanan" {...sectionReveal} className="mx-auto max-w-7xl px-5 sm:px-8">
                         <dl className="grid grid-cols-2 gap-y-5 rounded-2xl border border-slate-200/80 bg-white px-4 py-5 shadow-[0_12px_30px_-28px_rgba(15,23,42,0.28)] sm:px-6 md:grid-cols-5 md:divide-x md:divide-slate-100">
                             {statItems.map((item) => (
                                 <div key={item.label} className="flex items-center gap-3 md:justify-center md:px-4">
@@ -238,9 +255,9 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 </div>
                             ))}
                         </dl>
-                    </section>
+                    </motion.section>
 
-                    <section aria-labelledby="solusi-heading" className="mx-auto max-w-7xl px-5 pb-16 pt-14 sm:px-8 lg:pb-20 lg:pt-16">
+                    <motion.section aria-labelledby="solusi-heading" {...sectionReveal} className="mx-auto max-w-7xl px-5 pb-16 pt-14 sm:px-8 lg:pb-20 lg:pt-16">
                         <div className="mb-7 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                             <div className="max-w-2xl">
                                 <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#2547F9]">
@@ -268,9 +285,10 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 return (
                                     <motion.div
                                         key={category.slug}
-                                        initial={{ opacity: 0, y: 18 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.35, delay: Math.min(index * 0.045, 0.25), ease: 'easeOut' }}
+                                        initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true, amount: 0.25 }}
+                                        transition={{ duration: 0.5, delay: Math.min(index * 0.06, 0.3), ease: 'easeOut' }}
                                         className="w-[min(82vw,22rem)] shrink-0 snap-start"
                                     >
                                         <Link href={servicesIndex()} className="group flex min-h-[19rem] h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-5 transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-[#2547F9]/35 hover:shadow-[0_16px_34px_-28px_rgba(37,71,249,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] sm:p-6">
@@ -327,8 +345,8 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                             </ol>
                         </div>
 
-                        <div className="mt-4 grid gap-4 lg:grid-cols-[1.1fr_1fr]">
-                            <div className="relative flex flex-col justify-between gap-6 overflow-hidden rounded-2xl bg-[#2547F9] p-7 text-white sm:flex-row sm:items-center">
+                        <div className="mt-4 grid min-w-0 gap-4 lg:grid-cols-[1.1fr_1fr]">
+                            <div className="relative flex min-w-0 flex-col justify-between gap-6 overflow-hidden rounded-2xl bg-[#2547F9] p-7 text-white sm:flex-row sm:items-center">
                                 <img src="/images/home-team.jpg" alt="" aria-hidden="true" className="absolute inset-0 size-full object-cover object-[center_30%]" />
                                 <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#1E3EDB] via-[#2547F9]/95 to-[#2547F9]/55" />
                                 <div className="relative max-w-sm">
@@ -344,7 +362,7 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 </Link>
                             </div>
 
-                            <div className={`rounded-2xl border border-slate-200 bg-white p-6 ${cardShadow}`}>
+                            <div className={`min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 ${cardShadow}`}>
                                 <div className="flex items-start justify-between gap-4">
                                     <div>
                                         <h2 className="text-sm font-semibold text-slate-950">Jaringan mitra kami</h2>
@@ -355,19 +373,23 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                         <ArrowRight aria-hidden="true" className="size-3.5" />
                                     </Link>
                                 </div>
-                                <ul className="mt-6 grid grid-cols-3 items-center gap-x-6 gap-y-4 sm:grid-cols-5">
-                                    {trustedLogos.map((partner) => (
-                                        <li key={partner.name} className="flex h-8 items-center justify-center">
-                                            <img src={partner.logo} alt={partner.name} loading="lazy" className="max-h-full max-w-full object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0" />
-                                        </li>
-                                    ))}
-                                </ul>
+                                <div className="relative mt-5 w-full min-w-0 overflow-hidden">
+                                    <Marquee className="w-full min-w-0 [--duration:14s] [--gap:2.5rem]">
+                                        {trustedLogos.map((partner) => (
+                                            <div key={partner.name} className="flex h-9 w-28 shrink-0 items-center justify-center sm:w-32">
+                                                <img src={partner.logo} alt={partner.name} loading="lazy" className="max-h-full max-w-full object-contain opacity-65 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0" />
+                                            </div>
+                                        ))}
+                                    </Marquee>
+                                    <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent" />
+                                    <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent" />
+                                </div>
                             </div>
                         </div>
-                    </section>
+                    </motion.section>
                 </div>
 
-                <section aria-labelledby="featured-heading" className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
+                <motion.section aria-labelledby="featured-heading" {...sectionReveal} className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                         <div className="max-w-xl">
                             <p className="text-sm font-semibold text-[#2547F9]">Layanan</p>
@@ -408,10 +430,10 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                             </Link>
                         ))}
                     </div>
-                </section>
+                </motion.section>
 
                 {articles.length > 0 && (
-                    <section aria-labelledby="articles-heading" className="bg-[#F7F8FD]">
+                    <motion.section aria-labelledby="articles-heading" {...sectionReveal} className="bg-[#F7F8FD]">
                         <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                                 <div className="max-w-xl">
@@ -429,11 +451,11 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 ))}
                             </div>
                         </div>
-                    </section>
+                    </motion.section>
                 )}
 
                 {faqs.length > 0 && (
-                    <section aria-labelledby="faq-heading" className="border-y border-slate-200/70 bg-[#F7F8FD]">
+                    <motion.section aria-labelledby="faq-heading" {...sectionReveal} className="border-y border-slate-200/70 bg-[#F7F8FD]">
                         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 sm:py-16 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16 lg:py-20">
                             <div className="h-fit rounded-3xl border border-slate-200/80 bg-white p-6 shadow-[0_18px_40px_-32px_rgba(15,23,42,0.35)] sm:p-8">
                                 <div className="flex size-11 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#2547F9]">
@@ -474,7 +496,7 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 ))}
                             </div>
                         </div>
-                    </section>
+                    </motion.section>
                 )}
             </main>
             <PublicFooter />
