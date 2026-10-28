@@ -176,7 +176,7 @@ export default function ServiceForm({
 
                 <Form
                     action={action}
-                    method={isEditing ? 'put' : 'post'}
+                    method="post"
                     options={{ preserveScroll: true }}
                     encType="multipart/form-data"
                     className="flex flex-col gap-6"
@@ -185,6 +185,7 @@ export default function ServiceForm({
                 >
                     {({ processing, errors }) => (
                         <>
+                            {isEditing && <input type="hidden" name="_method" value="put" />}
                             <section className="flex flex-col gap-5 rounded-2xl border border-border bg-white p-5 shadow-sm shadow-slate-900/[0.02] sm:p-6">
                                 <SectionHeading icon={Globe2} title="Informasi layanan" description="Identitas dan ringkasan yang tampil di halaman katalog." />
                                 <div className="grid gap-4 md:grid-cols-2">

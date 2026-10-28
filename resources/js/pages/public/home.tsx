@@ -4,6 +4,8 @@ import {
     BadgeCheck,
     BookOpen,
     ChevronDown,
+    ChevronLeft,
+    ChevronRight,
     Clock3,
     FileText,
     Handshake,
@@ -11,9 +13,10 @@ import {
     MessageCircle,
     Package,
     Sparkles,
-    UsersRound,
     Workflow,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
 import { show as aboutShow } from '@/actions/App/Http/Controllers/Site/AboutPageController';
 import { index as blogIndex } from '@/actions/App/Http/Controllers/Site/ArticleController';
 import { index as partnershipIndex } from '@/actions/App/Http/Controllers/Site/PartnershipApplicationController';
@@ -73,8 +76,9 @@ export default function Home({ featured, categories, partners, articles, faqs, s
         .map((name) => name.split(' ').slice(0, 2).map((part) => part[0]).join('').toUpperCase());
     const whatsappHref = props.siteContact.whatsapp ? `https://wa.me/${props.siteContact.whatsapp}` : null;
     const consultHref = `${partnershipIndex().url}#form-pendaftaran`;
-    const shownCategories = categories.slice(0, 4);
-    const otherServices = categories.slice(4).reduce((total, category) => total + category.servicesCount, 0);
+    const categoriesCarouselRef = useRef<HTMLDivElement>(null);
+    const [canScrollCategoriesLeft, setCanScrollCategoriesLeft] = useState(false);
+    const [canScrollCategoriesRight, setCanScrollCategoriesRight] = useState(false);
     const preferredPartners = ['Tokopedia', 'Gojek', 'Bank Rakyat Indonesia', 'Telkom Indonesia', 'Indofood'];
     const trustedLogos = [
         ...preferredPartners.map((name) => partners.find((partner) => partner.name === name)).filter((partner) => partner !== undefined),
@@ -88,6 +92,35 @@ export default function Home({ featured, categories, partners, articles, faqs, s
         { icon: Handshake, value: partners.length, label: 'Jaringan mitra' },
         { icon: BookOpen, value: stats.articles, label: 'Panduan di blog' },
     ];
+
+    useEffect(() => {
+        const carousel = categoriesCarouselRef.current;
+
+        if (!carousel) {
+            return;
+        }
+
+        const updateScrollControls = () => {
+            setCanScrollCategoriesLeft(carousel.scrollLeft > 0);
+            setCanScrollCategoriesRight(carousel.scrollLeft + carousel.clientWidth < carousel.scrollWidth - 1);
+        };
+
+        updateScrollControls();
+        carousel.addEventListener('scroll', updateScrollControls, { passive: true });
+        window.addEventListener('resize', updateScrollControls);
+
+        return () => {
+            carousel.removeEventListener('scroll', updateScrollControls);
+            window.removeEventListener('resize', updateScrollControls);
+        };
+    }, [categories.length]);
+
+    const scrollCategories = (direction: -1 | 1) => {
+        categoriesCarouselRef.current?.scrollBy({
+            left: direction * (categoriesCarouselRef.current.clientWidth * 0.8),
+            behavior: 'smooth',
+        });
+    };
 
     return (
         <>
@@ -103,8 +136,10 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 <Sparkles aria-hidden="true" className="size-3.5" />
                                 Solusi Tuntas Legalitas &amp; Perizinan
                             </p>
-                            <h1 className="mt-6 text-[2.6rem] font-semibold leading-[1.08] tracking-tight text-slate-950 sm:text-6xl">
-                                Anda Fokus Bangun Usaha, <span className="text-[#2547F9]">Legalitas dan Perizinan Serahkan kepada Kami.</span>
+                            <h1 className="mt-6 text-[2.15rem] font-semibold leading-[1.12] tracking-tight text-slate-950 sm:text-5xl">
+                                <span className="block">Anda Fokus Bangun Usaha,</span>
+                                <span className="block text-[#2547F9]">Legalitas dan Perizinan</span>
+                                <span className="block text-[#2547F9]">Serahkan kepada Kami.</span>
                             </h1>
                             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
                                 Kami dampingi perjalanan Anda membangun bisnis. Sejak hari pertama mendirikan perusahaan, memilih kantor dan alamat, mengurus perizinan, mendaftarkan merek, hingga mengelola pembukuan dan pajak.
@@ -221,45 +256,49 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                             </Link>
                         </div>
 
-                        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                            {shownCategories.map((category) => {
+                        <div
+                            ref={categoriesCarouselRef}
+                            role="region"
+                            aria-label="Kategori layanan"
+                            className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-5 [scrollbar-width:none] sm:-mx-8 sm:px-8 [&::-webkit-scrollbar]:hidden"
+                        >
+                            {categories.map((category, index) => {
                                 const Icon = categoryIcon(category.slug);
 
                                 return (
-                                    <Link key={category.slug} href={servicesIndex()} className="group flex min-h-56 flex-col rounded-2xl border border-slate-200/80 bg-white p-5 transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-[#2547F9]/35 hover:shadow-[0_16px_34px_-28px_rgba(37,71,249,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] sm:p-6">
-                                        <span className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#FFE27A] px-3 py-2.5">
-                                            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#2547F9]">
-                                                <Icon aria-hidden="true" className="size-5" />
+                                    <motion.div
+                                        key={category.slug}
+                                        initial={{ opacity: 0, y: 18 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.35, delay: Math.min(index * 0.045, 0.25), ease: 'easeOut' }}
+                                        className="w-[min(82vw,22rem)] shrink-0 snap-start"
+                                    >
+                                        <Link href={servicesIndex()} className="group flex min-h-[19rem] h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-5 transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-[#2547F9]/35 hover:shadow-[0_16px_34px_-28px_rgba(37,71,249,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] sm:p-6">
+                                            <span className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#FFE27A] px-3 py-2.5">
+                                                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#2547F9]">
+                                                    <Icon aria-hidden="true" className="size-5" />
+                                                </span>
+                                                <h3 className="text-sm font-bold leading-snug tracking-[0.04em] text-slate-950 uppercase">{category.name}</h3>
                                             </span>
-                                            <h3 className="text-sm font-bold leading-snug tracking-[0.04em] text-slate-950 uppercase">{category.name}</h3>
-                                        </span>
-                                        {category.description && <p className="mt-2 text-sm leading-6 text-slate-500">{category.description}</p>}
-                                        <span className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-medium text-slate-400">
-                                            <span>{category.servicesCount} layanan</span>
-                                            <ArrowRight aria-hidden="true" className="size-4 text-[#2547F9] transition-transform group-hover:translate-x-1" />
-                                        </span>
-                                    </Link>
+                                            {category.description && <p className="mt-4 text-sm leading-6 text-slate-500">{category.description}</p>}
+                                            <span className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-medium text-slate-400">
+                                                <span>{category.servicesCount} layanan</span>
+                                                <ArrowRight aria-hidden="true" className="size-4 text-[#2547F9] transition-transform group-hover:translate-x-1" />
+                                            </span>
+                                        </Link>
+                                    </motion.div>
                                 );
                             })}
                         </div>
 
-                        {categories.length > 4 && (
-                            <div className="mt-4 flex flex-col gap-4 rounded-2xl border border-[#DCE5FF] bg-[#F7F9FF] p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                                <div className="flex items-start gap-3">
-                                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-[#2547F9] ring-1 ring-[#2547F9]/10">
-                                        <UsersRound aria-hidden="true" className="size-5" />
-                                    </span>
-                                    <div>
-                                        <h3 className="text-sm font-semibold text-slate-900">Perlu layanan di bidang lain?</h3>
-                                        <p className="mt-1 text-sm leading-6 text-slate-600">{categories.slice(4).map((category) => category.name).join(' · ')}</p>
-                                    </div>
-                                </div>
-                                <Link href={servicesIndex()} className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition-colors hover:border-[#2547F9]/30 hover:text-[#2547F9]">
-                                    Lihat {otherServices} layanan lainnya
-                                    <ArrowRight aria-hidden="true" className="size-4" />
-                                </Link>
-                            </div>
-                        )}
+                        <div className="mt-2 flex justify-end gap-2">
+                            <button type="button" onClick={() => scrollCategories(-1)} disabled={!canScrollCategoriesLeft} aria-label="Kategori sebelumnya" className="inline-flex size-10 items-center justify-center rounded-full bg-white text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                <ChevronLeft aria-hidden="true" className="size-5" />
+                            </button>
+                            <button type="button" onClick={() => scrollCategories(1)} disabled={!canScrollCategoriesRight} aria-label="Kategori berikutnya" className="inline-flex size-10 items-center justify-center rounded-full bg-white text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9]">
+                                <ChevronRight aria-hidden="true" className="size-5" />
+                            </button>
+                        </div>
 
                         <div className={`mt-4 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 lg:grid-cols-[1.45fr_5fr] lg:items-center ${cardShadow}`}>
                             <div>
