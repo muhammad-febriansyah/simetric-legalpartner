@@ -101,13 +101,13 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                         <div>
                             <p className="inline-flex items-center gap-2 rounded-full border border-[#2547F9]/15 bg-white px-3.5 py-1.5 text-xs font-medium text-[#2547F9]">
                                 <Sparkles aria-hidden="true" className="size-3.5" />
-                                Solusi legalitas bisnis, cepat dan terpercaya
+                                Solusi Tuntas Legalitas &amp; Perizinan
                             </p>
                             <h1 className="mt-6 text-[2.6rem] font-semibold leading-[1.08] tracking-tight text-slate-950 sm:text-6xl">
-                                Urus legalitas usaha, <span className="text-[#2547F9]">tanpa bolak‑balik.</span>
+                                Anda Fokus Bangun Usaha, <span className="text-[#2547F9]">Legalitas dan Perizinan Serahkan kepada Kami.</span>
                             </h1>
                             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-                                Pendirian PT dan CV, perizinan, merek, sampai pajak. Biaya dan tahapan kami jelaskan sebelum Anda memutuskan.
+                                Kami dampingi perjalanan Anda membangun bisnis. Sejak hari pertama mendirikan perusahaan, memilih kantor dan alamat, mengurus perizinan, mendaftarkan merek, hingga mengelola pembukuan dan pajak.
                             </p>
                             <div className="mt-8 flex flex-wrap gap-3">
                                 <Link href={servicesIndex()} className="inline-flex h-12 items-center gap-2 rounded-full bg-[#2547F9] px-6 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_10px_22px_-10px_rgba(37,71,249,0.7)] transition-colors hover:bg-[#1E3EDB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2">
@@ -227,10 +227,12 @@ export default function Home({ featured, categories, partners, articles, faqs, s
 
                                 return (
                                     <Link key={category.slug} href={servicesIndex()} className="group flex min-h-56 flex-col rounded-2xl border border-slate-200/80 bg-white p-5 transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-[#2547F9]/35 hover:shadow-[0_16px_34px_-28px_rgba(37,71,249,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] sm:p-6">
-                                        <span className="flex size-11 items-center justify-center rounded-xl bg-[#2547F9]/[0.07] text-[#2547F9] transition-colors group-hover:bg-[#2547F9] group-hover:text-white">
-                                            <Icon aria-hidden="true" className="size-5" />
+                                        <span className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#FFE27A] px-3 py-2.5">
+                                            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#2547F9]">
+                                                <Icon aria-hidden="true" className="size-5" />
+                                            </span>
+                                            <h3 className="text-sm font-bold leading-snug tracking-[0.04em] text-slate-950 uppercase">{category.name}</h3>
                                         </span>
-                                        <h3 className="mt-5 text-base font-semibold leading-snug text-slate-950">{category.name}</h3>
                                         {category.description && <p className="mt-2 text-sm leading-6 text-slate-500">{category.description}</p>}
                                         <span className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-medium text-slate-400">
                                             <span>{category.servicesCount} layanan</span>
