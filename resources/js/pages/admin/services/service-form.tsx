@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, CircleHelp, FileText, Globe2, Image as ImageIcon, ListChecks, PackageCheck, Save } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
@@ -138,36 +138,35 @@ export default function ServiceForm({
 }) {
     const isEditing = service !== null;
     const action = isEditing ? updateService.url(service.id) : storeService.url();
+    const { errors } = usePage<{ errors: Record<string, string> }>().props;
     const [name, setName] = useState(service?.name ?? '');
     const [slug, setSlug] = useState(service?.slug ?? '');
     const [slugIsManuallyEdited, setSlugIsManuallyEdited] = useState(false);
-    const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
     const [processing, setProcessing] = useState(false);
-    const [errors, setErrors] = useState<Record<string, string>>({});
 
     function submitForm(event: FormEvent<HTMLFormElement>): void {
         event.preventDefault();
 
-        const formData = new FormData(event.currentTarget);
-        const formValues = Object.fromEntries(formData.entries());
+        const form = event.currentTarget;
+        const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content;
 
-        if (heroImageFile) {
-            formValues.hero_image_file = heroImageFile;
+        if (!csrfToken) {
+            toast.error('Token keamanan tidak ditemukan. Muat ulang halaman lalu coba lagi.');
+            return;
         }
 
-        setProcessing(true);
-        setErrors({});
+        let csrfInput = form.querySelector<HTMLInputElement>('input[name="_token"]');
 
-        router.post(action, formValues, {
-            forceFormData: true,
-            preserveScroll: true,
-            onSuccess: () => toast.success(isEditing ? 'Layanan berhasil diperbarui.' : 'Layanan berhasil dibuat.'),
-            onError: (validationErrors) => {
-                setErrors(validationErrors);
-                toast.error('Layanan belum tersimpan. Periksa kolom yang ditandai.');
-            },
-            onFinish: () => setProcessing(false),
-        });
+        if (!csrfInput) {
+            csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            form.append(csrfInput);
+        }
+
+        csrfInput.value = csrfToken;
+        setProcessing(true);
+        HTMLFormElement.prototype.submit.call(form);
     }
 
     function slugify(value: string): string {
@@ -202,7 +201,7 @@ export default function ServiceForm({
                     description={isEditing ? 'Perbarui informasi dan tampilan layanan untuk pengunjung.' : 'Isi informasi layanan. Kamu bisa melengkapi paket dan FAQ setelah layanan dibuat.'}
                 />
 
-                <form onSubmit={submitForm} encType="multipart/form-data" className="flex flex-col gap-6">
+                <form action={action} method="post" encType="multipart/form-data" onSubmit={submitForm} className="flex flex-col gap-6">
                     {isEditing && <input type="hidden" name="_method" value="put" />}
                             <section className="flex flex-col gap-5 rounded-2xl border border-border bg-white p-5 shadow-sm shadow-slate-900/[0.02] sm:p-6">
                                 <SectionHeading icon={Globe2} title="Informasi layanan" description="Identitas dan ringkasan yang tampil di halaman katalog." />
@@ -251,7 +250,6 @@ export default function ServiceForm({
                                         hint="PNG, JPG, atau WebP · maks. 3 MB"
                                         currentImage={service?.heroImage ?? null}
                                         error={errors.hero_image_file}
-                                        onFileChange={setHeroImageFile}
                                     />
                                     <TextField id="hero_image_alt" label="Teks alternatif gambar" value={service?.heroImageAlt} error={errors.hero_image_alt} placeholder="Deskripsi singkat gambar" />
                                 </div>
