@@ -6,6 +6,7 @@ import {
     Check,
     ChevronDown,
     Clock3,
+    Download,
     FileCheck2,
     Layers3,
     Plus,
@@ -308,7 +309,7 @@ export default function ServiceShow({
                     )}
 
                     {(service.requirements.length > 0 || service.processSteps.length > 0) && (
-                        <section className="grid gap-4 border-t border-slate-200 py-14 sm:gap-5 sm:py-16 lg:grid-cols-2">
+                        <section id="persyaratan" className="scroll-mt-28 grid gap-4 border-t border-slate-200 py-14 sm:gap-5 sm:py-16 lg:grid-cols-2">
                             {service.requirements.length > 0 && (
                                 <div className="rounded-2xl border border-slate-200 bg-[#F7F8FD] p-6 sm:p-8">
                                     <span className="flex size-11 items-center justify-center rounded-xl bg-white text-primary shadow-sm ring-1 ring-slate-200/80">
@@ -343,6 +344,71 @@ export default function ServiceShow({
                                     </ol>
                                 </div>
                             )}
+                        </section>
+                    )}
+
+                    {service.slug === 'pendirian-pt-umum' && (
+                        <section className="border-t border-slate-200 py-14 sm:py-16">
+                            <div className="max-w-3xl">
+                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Referensi hukum</p>
+                                <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">Dasar hukum pendirian PT</h2>
+                                <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">Dokumen berikut memuat regulasi terkait perseroan terbatas. Klik PDF untuk mengunduh salinan dokumen.</p>
+                            </div>
+
+                            <div className="mt-7 overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+                                        <thead className="bg-slate-900 text-white">
+                                            <tr>
+                                                <th scope="col" className="w-16 px-4 py-4 text-center font-semibold">#</th>
+                                                <th scope="col" className="w-56 px-4 py-4 font-semibold">Peraturan</th>
+                                                <th scope="col" className="px-4 py-4 font-semibold">Tentang</th>
+                                                <th scope="col" className="w-28 px-4 py-4 text-center font-semibold">Download</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-200">
+                                            {[
+                                                { title: 'UU No. 40/2007', description: 'Perseroan Terbatas — dasar hukum utama perseroan terbatas.', file: 'uu-40-tahun-2007.pdf' },
+                                                { title: 'UU No. 11/2020', description: 'Cipta Kerja — dokumen historis; telah dicabut dan digantikan UU No. 6 Tahun 2023.', file: 'uu-11-tahun-2020.pdf', currentUrl: 'https://peraturan.bpk.go.id/Details/246523/uu-no-6-tahun-2023', currentLabel: 'Lihat UU No. 6/2023' },
+                                                { title: 'PP No. 27/1998', description: 'Penggabungan, peleburan, dan pengambilalihan perseroan terbatas.', file: 'pp-27-tahun-1998.pdf' },
+                                                { title: 'PP No. 43/2011', description: 'Tata cara pengajuan dan pemakaian nama perseroan terbatas.', file: 'pp-43-tahun-2011.pdf' },
+                                                { title: 'PP No. 47/2012', description: 'Tanggung jawab sosial dan lingkungan perseroan terbatas.', file: 'pp-47-tahun-2012.pdf' },
+                                                { title: 'PP No. 7/2016', description: 'Perubahan modal dasar perseroan terbatas.', file: 'pp-7-tahun-2016.pdf' },
+                                                { title: 'Permenkumham No. 21/2021', description: 'Pendaftaran pendirian, perubahan, dan pembubaran PT — dokumen historis; telah dicabut.', file: 'permenkumham-21-2021.pdf', currentUrl: 'https://peraturan.go.id/files/permenkum-no-49-tahun-2025.pdf', currentLabel: 'Lihat Permenkum No. 49/2025' },
+                                            ].map((regulation, index) => (
+                                                <tr key={regulation.file} className={index % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                                                    <td className="px-4 py-4 text-center">
+                                                        <span className="inline-flex size-8 items-center justify-center rounded-full bg-amber-400 text-sm font-bold text-slate-950">{index + 1}</span>
+                                                    </td>
+                                                    <th scope="row" className="px-4 py-4 font-semibold text-slate-900">{regulation.title}</th>
+                                                    <td className="px-4 py-4 leading-6 text-slate-700">
+                                                        {regulation.description}
+                                                        {regulation.currentUrl && <a href={regulation.currentUrl} target="_blank" rel="noreferrer noopener" className="ml-1 inline-flex font-semibold text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary">{regulation.currentLabel}</a>}
+                                                    </td>
+                                                    <td className="px-4 py-4 text-center">
+                                                        <a href={`/dokumen/${regulation.file}`} download aria-label={`Unduh ${regulation.title} PDF`} className="inline-flex size-10 items-center justify-center rounded-xl bg-white text-primary ring-1 ring-slate-200 transition hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                                                            <Download aria-hidden="true" className="size-5" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div className="mt-5 rounded-2xl border-l-4 border-amber-400 bg-amber-50/70 p-5 sm:p-6">
+                                <h3 className="font-semibold text-slate-900">Catatan status regulasi</h3>
+                                <p className="mt-2 text-sm leading-6 text-slate-700">UU No. 11 Tahun 2020 berstatus tidak berlaku dan digantikan UU No. 6 Tahun 2023. Permenkumham No. 21 Tahun 2021 juga telah dicabut oleh Permenkum No. 49 Tahun 2025. Tautan pada tabel mengarah ke dokumen pengganti.</p>
+                            </div>
+
+                            <div className="mt-8 rounded-2xl border border-slate-200 border-l-4 border-l-amber-400 bg-slate-50 p-5 sm:p-7">
+                                <h3 className="flex items-center gap-2 font-semibold text-slate-900"><FileCheck2 aria-hidden="true" className="size-5 text-primary" />Apa itu AHU Online &amp; OSS RBA?</h3>
+                                <p className="mt-4 text-sm leading-7 text-slate-700"><strong>AHU Online</strong> (<a href="https://ahu.go.id" target="_blank" rel="noreferrer noopener" className="font-medium text-primary underline underline-offset-2">ahu.go.id</a>) adalah sistem administrasi badan hukum Kementerian Hukum, termasuk untuk pendaftaran perseroan terbatas. Pengesahan badan hukum diterbitkan melalui sistem AHU sesuai ketentuan yang berlaku.</p>
+                                <p className="mt-3 text-sm leading-7 text-slate-700"><strong>OSS Berbasis Risiko</strong> (<a href="https://oss.go.id" target="_blank" rel="noreferrer noopener" className="font-medium text-primary underline underline-offset-2">oss.go.id</a>) adalah sistem perizinan berusaha. Setelah perseroan terbentuk, pelaku usaha mengurus NIB dan perizinan sesuai KBLI serta tingkat risiko kegiatan usaha. Penyelenggaraan perizinan berbasis risiko saat ini diatur dalam <a href="https://peraturan.bpk.go.id/Details/319773/pp-no-28-tahun-2025" target="_blank" rel="noreferrer noopener" className="font-semibold text-primary underline underline-offset-2">PP No. 28 Tahun 2025</a>.</p>
+                            </div>
+
+                            <p className="mt-6 text-sm leading-7 text-slate-600">Tim LegalPartnerID membantu proses pendirian PT dari akta notaris, pendaftaran AHU, hingga pendampingan perizinan OSS dan administrasi pajak. Klien menyiapkan dokumen pendiri serta informasi perusahaan; tim kami mendampingi tahapan berikutnya. <a href="#persyaratan" className="font-medium text-primary underline underline-offset-2">Lihat persyaratan</a> atau konsultasikan kebutuhan Anda melalui WhatsApp.</p>
                         </section>
                     )}
 
