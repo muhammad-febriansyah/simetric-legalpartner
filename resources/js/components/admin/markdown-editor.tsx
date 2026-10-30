@@ -142,6 +142,71 @@ function convertPastedHtml(html: string): string {
         .trim();
 }
 
+function convertPastedText(text: string): string {
+    const lines = text.replace(/\r\n?/g, "\n").split("\n");
+    const convertedLines: string[] = [];
+    let convertedTable = false;
+    let index = 0;
+
+    while (index < lines.length) {
+        if (!lines[index].includes("\t")) {
+            convertedLines.push(lines[index]);
+            index++;
+            continue;
+        }
+
+        const rows: string[][] = [];
+        while (index < lines.length && lines[index].includes("\t")) {
+            rows.push(lines[index].split("\t").map((cell) => cell.trim()));
+            index++;
+        }
+
+        if (rows.length < 2) {
+            convertedLines.push(...rows.map((row) => row.join("\t")));
+            continue;
+        }
+
+        const columnCount = Math.max(...rows.map((row) => row.length));
+        const formattedRows = rows.map((row) => {
+            const cells = Array.from({ length: columnCount }, (_, cellIndex) =>
+                (row[cellIndex] ?? "").replace(/\|/g, "\\|"),
+            );
+
+            return `| ${cells.join(" | ")} |`;
+        });
+        const separator = `| ${Array.from({ length: columnCount }, () => "---").join(" | ")} |`;
+        formattedRows.splice(1, 0, separator);
+        convertedLines.push(...formattedRows);
+        convertedTable = true;
+    }
+
+    return convertedTable ? convertedLines.join("\n") : text;
+}
+
+function splitTableRow(line: string): string[] {
+    const cells: string[] = [];
+    let cell = "";
+    let isEscaped = false;
+
+    for (const character of line.trim().slice(1, -1)) {
+        if (character === "|" && !isEscaped) {
+            cells.push(cell.trim().replace(/\\\|/g, "|"));
+            cell = "";
+            continue;
+        }
+
+        cell += character;
+        isEscaped = character === "\\" && !isEscaped;
+        if (character !== "\\") {
+            isEscaped = false;
+        }
+    }
+
+    cells.push(cell.trim().replace(/\\\|/g, "|"));
+
+    return cells;
+}
+
 function renderMarkdown(value: string): ReactNode[] {
     const lines = value.split(/\r?\n/);
     const blocks: ReactNode[] = [];
@@ -173,7 +238,7 @@ function renderMarkdown(value: string): ReactNode[] {
         if (/^\|.*\|$/.test(line) && index + 1 < lines.length && isTableSeparator(lines[index + 1])) {
             const rows: string[][] = [];
             while (index < lines.length && /^\|.*\|$/.test(lines[index].trim())) {
-                const cells = lines[index].trim().slice(1, -1).split("|").map((cell) => cell.trim().replace(/\\\|/g, "|"));
+                const cells = splitTableRow(lines[index]);
                 if (!isTableSeparator(lines[index])) {
                     rows.push(cells);
                 }
@@ -416,7 +481,8 @@ export function MarkdownEditor({
                         aria-invalid={Boolean(error)}
                         onPaste={(event) => {
                             const html = event.clipboardData.getData("text/html");
-                            if (!html) {
+                            const plainText = event.clipboardData.getData("text/plain");
+                            if (!html && !plainText.includes("\t")) {
                                 return;
                             }
 
@@ -424,7 +490,13 @@ export function MarkdownEditor({
                             const textarea = event.currentTarget;
                             const start = textarea.selectionStart;
                             const end = textarea.selectionEnd;
-                            const pastedContent = convertPastedHtml(html);
+                            const convertedHtml = html ? convertPastedHtml(html) : "";
+                            const htmlContainsTable = /(?:^|\n)\|.*\|\n\|(?:\s*:?-+:?\s*\|)+/.test(
+                                convertedHtml,
+                            );
+                            const pastedContent = html && (!plainText.includes("\t") || htmlContainsTable)
+                                ? convertedHtml
+                                : convertPastedText(plainText);
                             onChange(`${value.slice(0, start)}${pastedContent}${value.slice(end)}`);
                             requestAnimationFrame(() => {
                                 textarea.focus();
