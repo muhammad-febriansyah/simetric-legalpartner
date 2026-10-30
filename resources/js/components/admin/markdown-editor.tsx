@@ -404,8 +404,7 @@ export function MarkdownEditor({
                         </TabsList>
                     </Tabs>
                 </div>
-                {activeTab === "write" ? (
-                    <textarea
+                <textarea
                         ref={textareaRef}
                         id={id}
                         name={name}
@@ -413,7 +412,7 @@ export function MarkdownEditor({
                         onChange={(event) => onChange(event.target.value)}
                         placeholder={placeholder}
                         rows={16}
-                        required={required}
+                        required={required && activeTab === "write"}
                         aria-invalid={Boolean(error)}
                         onPaste={(event) => {
                             const html = event.clipboardData.getData("text/html");
@@ -433,9 +432,12 @@ export function MarkdownEditor({
                                 textarea.setSelectionRange(cursor, cursor);
                             });
                         }}
-                        className="w-full resize-y border-0 bg-transparent px-4 py-3 text-sm leading-7 outline-none placeholder:text-muted-foreground"
+                        className={cn(
+                            "w-full resize-y border-0 bg-transparent px-4 py-3 text-sm leading-7 outline-none placeholder:text-muted-foreground",
+                            activeTab !== "write" && "hidden",
+                        )}
                     />
-                ) : (
+                {activeTab === "preview" && (
                     <div className="min-h-[23.5rem] space-y-4 px-4 py-3 text-sm leading-7 text-foreground [&_h2]:mt-5 [&_h2]:text-xl [&_h3]:mt-4 [&_h3]:text-lg [&_p]:whitespace-normal">
                         {value.trim() ? (
                             renderMarkdown(value)

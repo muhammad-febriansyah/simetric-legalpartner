@@ -25,7 +25,7 @@ class StoreArticleRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'alpha_dash', 'unique:articles,slug'],
+            'slug' => ['nullable', 'string', 'max:255', 'alpha_dash'],
             'excerpt' => ['nullable', 'string', 'max:1000'],
             'content' => ['required', 'string', 'max:100000'],
             'category_label' => ['nullable', 'string', 'max:100'],

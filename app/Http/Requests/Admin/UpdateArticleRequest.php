@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Models\Article;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -24,17 +23,9 @@ class UpdateArticleRequest extends FormRequest
      */
     public function rules(): array
     {
-        $article = $this->route('article');
-
         return [
             'title' => ['required', 'string', 'max:255'],
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
-                'alpha_dash',
-                Rule::unique('articles', 'slug')->ignore($article instanceof Article ? $article->id : $article),
-            ],
+            'slug' => ['nullable', 'string', 'max:255', 'alpha_dash'],
             'excerpt' => ['nullable', 'string', 'max:1000'],
             'content' => ['required', 'string', 'max:100000'],
             'category_label' => ['nullable', 'string', 'max:100'],

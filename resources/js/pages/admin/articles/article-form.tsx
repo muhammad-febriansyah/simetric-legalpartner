@@ -85,7 +85,7 @@ export function ArticleForm({ article = null }: { article?: ArticleFormData | nu
 
                 <Form
                     action={isEditing ? updateArticle.url(article.id) : storeArticle.url()}
-                    method={isEditing ? "put" : "post"}
+                    method="post"
                     options={{ preserveScroll: true }}
                     encType="multipart/form-data"
                     className="flex flex-col gap-6"
@@ -94,12 +94,15 @@ export function ArticleForm({ article = null }: { article?: ArticleFormData | nu
                             isEditing ? "Artikel berhasil diperbarui." : "Artikel berhasil dibuat.",
                         )
                     }
-                    onError={() =>
-                        toast.error("Artikel belum tersimpan. Periksa kolom yang ditandai.")
+                    onError={(errors) =>
+                        toast.error("Artikel belum tersimpan.", {
+                            description: Object.values(errors)[0] ?? "Periksa kolom yang ditandai.",
+                        })
                     }
                 >
                     {({ processing, errors }) => (
                         <>
+                            {isEditing && <input type="hidden" name="_method" value="put" />}
                             <section className="grid gap-5 rounded-2xl border border-border bg-white p-5 shadow-sm shadow-slate-900/[0.02] sm:p-6">
                                 <div className="flex items-start gap-3">
                                     <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#2547F9]/[0.08] text-[#2547F9]">

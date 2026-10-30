@@ -42,6 +42,46 @@ test('admin can create a published article with generated slug and cover image',
     Storage::disk('public')->assertExists($article->cover_image);
 });
 
+test('admin can save another article with an existing slug', function () {
+    $user = User::factory()->create();
+    Article::factory()->create(['slug' => 'panduan-legalitas-usaha']);
+
+    $this->actingAs($user)->post(route('admin.articles.store'), [
+        'title' => 'Panduan Legalitas Usaha',
+        'slug' => 'panduan-legalitas-usaha',
+        'content' => 'Panduan terbaru untuk pemilik usaha.',
+        'author_name' => 'Admin LegalPartner',
+        'status' => 'draft',
+    ])->assertRedirect();
+
+    $this->assertDatabaseHas('articles', [
+        'title' => 'Panduan Legalitas Usaha',
+        'slug' => 'panduan-legalitas-usaha-2',
+    ]);
+});
+
+test('admin can update an article and its cover through a multipart post', function () {
+    Storage::fake('public');
+    $user = User::factory()->create();
+    $article = Article::factory()->create();
+    $existingSlug = $article->slug;
+
+    $this->actingAs($user)->post(route('admin.articles.update', $article), [
+        '_method' => 'put',
+        'title' => 'Artikel diperbarui',
+        'slug' => $existingSlug,
+        'content' => 'Isi artikel diperbarui.',
+        'cover_image_file' => UploadedFile::fake()->image('cover.png', 1200, 630),
+        'author_name' => 'Admin LegalPartner',
+        'status' => 'draft',
+    ])->assertRedirect(route('admin.articles.edit', $article));
+
+    $article->refresh();
+    expect($article->title)->toBe('Artikel diperbarui');
+    expect($article->cover_image)->not->toBeNull();
+    Storage::disk('public')->assertExists($article->cover_image);
+});
+
 test('admin can update and delete an article and its stored cover', function () {
     Storage::fake('public');
     Storage::disk('public')->put('articles/cover.jpg', 'image contents');
