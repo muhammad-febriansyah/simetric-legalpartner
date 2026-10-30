@@ -73,7 +73,73 @@ function renderInline(value: string): ReactNode[] {
 }
 
 function isBlockStart(line: string): boolean {
-    return /^(#{2,3}\s|>\s?|[-*]\s|\d+\.\s)/.test(line);
+    return /^(#{2,3}\s|>\s?|[-*]\s|\d+\.\s|\|.*\|$)/.test(line);
+}
+
+function convertPastedNode(node: Node): string {
+    if (node.nodeType === Node.TEXT_NODE) {
+        return node.textContent?.replace(/\s+/g, " ") ?? "";
+    }
+
+    if (!(node instanceof HTMLElement)) {
+        return "";
+    }
+
+    const tag = node.tagName.toLowerCase();
+    if (["script", "style", "meta", "link"].includes(tag)) {
+        return "";
+    }
+
+    if (tag === "table") {
+        const rows = Array.from(node.querySelectorAll("tr"));
+        const formattedRows = rows.map((row) => {
+            const cells = Array.from(row.querySelectorAll(":scope > th, :scope > td"));
+            return `| ${cells.map((cell) => cell.textContent?.replace(/\s+/g, " ").trim().replace(/\|/g, "\\|") ?? "").join(" | ")} |`;
+        });
+        if (formattedRows.length > 1) {
+            const separator = `| ${Array.from(rows[0].querySelectorAll(":scope > th, :scope > td"), () => "---").join(" | ")} |`;
+            formattedRows.splice(1, 0, separator);
+        }
+        return `${formattedRows.join("\n")}\n\n`;
+    }
+
+    const children = Array.from(node.childNodes).map(convertPastedNode).join("");
+    if (tag === "br") {
+        return "\n";
+    }
+    if (tag === "strong" || tag === "b") {
+        return `**${children.trim()}**`;
+    }
+    if (tag === "em" || tag === "i") {
+        return `*${children.trim()}*`;
+    }
+    if (tag === "h2" || tag === "h3") {
+        return `${tag === "h2" ? "##" : "###"} ${children.trim()}\n\n`;
+    }
+    if (tag === "li") {
+        return `- ${children.trim()}\n`;
+    }
+    if (tag === "ol") {
+        return `${Array.from(node.children, (item, index) => `${index + 1}. ${convertPastedNode(item).replace(/^-\s/, "").trim()}\n`).join("")}\n`;
+    }
+    if (tag === "ul") {
+        return `${children}\n`;
+    }
+    if (["p", "div", "section", "blockquote"].includes(tag)) {
+        return `${children.trim()}\n\n`;
+    }
+
+    return children;
+}
+
+function convertPastedHtml(html: string): string {
+    const document = new DOMParser().parseFromString(html, "text/html");
+    return Array.from(document.body.childNodes)
+        .map(convertPastedNode)
+        .join("")
+        .replace(/[\t ]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
 }
 
 function renderMarkdown(value: string): ReactNode[] {
@@ -100,6 +166,35 @@ function renderMarkdown(value: string): ReactNode[] {
                 </Heading>,
             );
             index++;
+            continue;
+        }
+
+        const isTableSeparator = (row: string) => /^\|(?:\s*:?-+:?\s*\|)+$/.test(row.trim());
+        if (/^\|.*\|$/.test(line) && index + 1 < lines.length && isTableSeparator(lines[index + 1])) {
+            const rows: string[][] = [];
+            while (index < lines.length && /^\|.*\|$/.test(lines[index].trim())) {
+                const cells = lines[index].trim().slice(1, -1).split("|").map((cell) => cell.trim().replace(/\\\|/g, "|"));
+                if (!isTableSeparator(lines[index])) {
+                    rows.push(cells);
+                }
+                index++;
+            }
+            blocks.push(
+                <div key={key} className="overflow-x-auto">
+                    <table className="w-full border-collapse text-left text-sm">
+                        <tbody>
+                            {rows.map((row, rowIndex) => (
+                                <tr key={`row-${rowIndex}`} className={rowIndex === 0 ? "bg-slate-100 font-semibold" : "border-t border-slate-200"}>
+                                    {row.map((cell, cellIndex) => {
+                                        const Cell = rowIndex === 0 ? "th" : "td";
+                                        return <Cell key={`cell-${rowIndex}-${cellIndex}`} className="border border-slate-200 px-3 py-2">{renderInline(cell)}</Cell>;
+                                    })}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>,
+            );
             continue;
         }
 
@@ -320,6 +415,24 @@ export function MarkdownEditor({
                         rows={16}
                         required={required}
                         aria-invalid={Boolean(error)}
+                        onPaste={(event) => {
+                            const html = event.clipboardData.getData("text/html");
+                            if (!html) {
+                                return;
+                            }
+
+                            event.preventDefault();
+                            const textarea = event.currentTarget;
+                            const start = textarea.selectionStart;
+                            const end = textarea.selectionEnd;
+                            const pastedContent = convertPastedHtml(html);
+                            onChange(`${value.slice(0, start)}${pastedContent}${value.slice(end)}`);
+                            requestAnimationFrame(() => {
+                                textarea.focus();
+                                const cursor = start + pastedContent.length;
+                                textarea.setSelectionRange(cursor, cursor);
+                            });
+                        }}
                         className="w-full resize-y border-0 bg-transparent px-4 py-3 text-sm leading-7 outline-none placeholder:text-muted-foreground"
                     />
                 ) : (
@@ -335,7 +448,7 @@ export function MarkdownEditor({
                 )}
             </div>
             <p className="text-xs text-muted-foreground">
-                Format teks tersimpan sebagai Markdown. HTML akan diabaikan.
+                Paste dari Word mempertahankan judul, tebal, daftar, dan tabel. Konten tersimpan sebagai Markdown.
             </p>
             <InputError message={error} />
         </div>
