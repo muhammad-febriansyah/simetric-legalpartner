@@ -1,11 +1,12 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { ArrowLeft, CircleHelp, FileText, Globe2, Image as ImageIcon, ListChecks, PackageCheck, Save } from 'lucide-react';
+import { ArrowLeft, CircleHelp, FileText, Globe2, Image as ImageIcon, ListChecks, PackageCheck, Plus, Save } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { create as createService, index as adminServicesIndex, store as storeService, update as updateService } from '@/actions/App/Http/Controllers/Admin/ServiceController';
 import { index as servicePackagesIndex } from '@/actions/App/Http/Controllers/Admin/ServicePackageController';
 import { index as serviceFaqsIndex } from '@/actions/App/Http/Controllers/Admin/FaqController';
+import { index as serviceAddonsIndex } from '@/actions/App/Http/Controllers/Admin/ServiceAddonController';
 import { ImageUploadField } from '@/components/admin/image-upload-field';
 import { PageHeader } from '@/components/page-header';
 import InputError from '@/components/input-error';
@@ -130,11 +131,13 @@ export default function ServiceForm({
     categories,
     packageCount = 0,
     faqCount = 0,
+    addonCount = 0,
 }: {
     service: ServiceFormData | null;
     categories: ServiceCategory[];
     packageCount?: number;
     faqCount?: number;
+    addonCount?: number;
 }) {
     const isEditing = service !== null;
     const action = isEditing ? updateService.url(service.id) : storeService.url();
@@ -267,6 +270,17 @@ export default function ServiceForm({
                                         <SectionHeading icon={PackageCheck} title="Paket harga" description={`${packageCount} paket terhubung ke layanan ini.`} />
                                         <Button variant="outline" asChild>
                                             <Link href={servicePackagesIndex({ service: service.id })}>Kelola paket</Link>
+                                        </Button>
+                                    </div>
+                                </section>
+                            )}
+
+                            {service && (
+                                <section className="flex flex-col gap-5 rounded-2xl border border-border bg-white p-5 shadow-sm shadow-slate-900/[0.02] sm:p-6">
+                                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <SectionHeading icon={Plus} title="Paket Add-on" description={`${addonCount} add-on terhubung ke layanan ini.`} />
+                                        <Button variant="outline" asChild>
+                                            <Link href={serviceAddonsIndex({ service: service.id })}>Kelola add-on</Link>
                                         </Button>
                                     </div>
                                 </section>

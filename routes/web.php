@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\LegalPageController as AdminLegalPageController;
 use App\Http\Controllers\Admin\PartnerController as AdminPartnerController;
 use App\Http\Controllers\Admin\PartnershipApplicationController as AdminPartnershipApplicationController;
+use App\Http\Controllers\Admin\ServiceAddonController as AdminServiceAddonController;
 use App\Http\Controllers\Admin\ServiceCategoryController as AdminServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\ServicePackageController as AdminServicePackageController;
@@ -67,6 +68,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('services.packages', AdminServicePackageController::class)
         ->except(['show'])
         ->scoped(['service' => 'id', 'package' => 'slug']);
+    Route::resource('services.addons', AdminServiceAddonController::class)
+        ->except(['show'])
+        ->scoped(['service' => 'id', 'addon' => 'id']);
     Route::resource('services', AdminServiceController::class)->only(['index', 'create', 'store', 'edit', 'update']);
 });
 

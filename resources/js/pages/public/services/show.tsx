@@ -286,8 +286,8 @@ export default function ServiceShow({
                     {service.addons.length > 0 && (
                         <section className="border-t border-slate-200 py-14 sm:py-16">
                             <div className="max-w-2xl">
-                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Pelengkap layanan</p>
-                                <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Tambahan sesuai kebutuhan.</h2>
+                                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Paket layanan</p>
+                                <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Paket Add-on</h2>
                             </div>
                             <ul className="mt-6 divide-y divide-slate-200 border-y border-slate-200">
                                 {service.addons.map((addon) => (

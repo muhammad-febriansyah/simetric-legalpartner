@@ -84,7 +84,7 @@ class ServiceController extends Controller
 
     public function edit(Service $service): Response
     {
-        $service->loadCount(['packages', 'faqs']);
+        $service->loadCount(['packages', 'faqs', 'addons']);
 
         return Inertia::render('admin/services/edit', [
             'service' => [
@@ -107,6 +107,7 @@ class ServiceController extends Controller
             ],
             'packageCount' => $service->packages_count,
             'faqCount' => $service->faqs_count,
+            'addonCount' => $service->addons_count,
             'categories' => ServiceCategory::query()
                 ->orderBy('sort_order')
                 ->orderBy('name')
