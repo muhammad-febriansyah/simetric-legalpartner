@@ -90,6 +90,10 @@ function convertPastedNode(node: Node): string {
         return "";
     }
 
+    if (node.matches("span[style*='mso-list:Ignore' i]")) {
+        return "";
+    }
+
     if (tag === "table") {
         const rows = Array.from(node.querySelectorAll("tr"));
         const formattedRows = rows.map((row) => {
@@ -104,17 +108,36 @@ function convertPastedNode(node: Node): string {
     }
 
     const children = Array.from(node.childNodes).map(convertPastedNode).join("");
+    const style = node.getAttribute("style") ?? "";
+    const classes = typeof node.className === "string" ? node.className : "";
+    const wordList = /mso-list\s*:/i.test(style);
+    const listMarker = wordList
+        ? node.querySelector("span[style*='mso-list:Ignore' i]")?.textContent?.trim() ?? ""
+        : "";
+    const isBold =
+        tag === "strong" || tag === "b" || /font-weight\s*:\s*(bold|[6-9]00)/i.test(style);
+    const isItalic =
+        tag === "em" || tag === "i" || /font-style\s*:\s*italic/i.test(style);
+
     if (tag === "br") {
         return "\n";
     }
-    if (tag === "strong" || tag === "b") {
+    if (isBold) {
         return `**${children.trim()}**`;
     }
-    if (tag === "em" || tag === "i") {
+    if (isItalic) {
         return `*${children.trim()}*`;
     }
-    if (tag === "h2" || tag === "h3") {
-        return `${tag === "h2" ? "##" : "###"} ${children.trim()}\n\n`;
+    if (
+        ["h1", "h2", "h3"].includes(tag) ||
+        /MsoHeading[123]/i.test(classes) ||
+        /mso-outline-level\s*:\s*[123]/i.test(style)
+    ) {
+        const level =
+            tag === "h3" || /MsoHeading3|mso-outline-level\s*:\s*3/i.test(`${classes} ${style}`)
+                ? "###"
+                : "##";
+        return `${level} ${children.trim()}\n\n`;
     }
     if (tag === "li") {
         return `- ${children.trim()}\n`;
@@ -126,6 +149,23 @@ function convertPastedNode(node: Node): string {
         return `${children}\n`;
     }
     if (["p", "div", "section", "blockquote"].includes(tag)) {
+        if (wordList) {
+            const isNumbered = /^\d+[.)]?$/.test(listMarker);
+            return `${isNumbered ? "1." : "-"} ${children.trim()}\n`;
+        }
+
+        if (/MsoTitle|MsoHeading1/i.test(classes)) {
+            return `## ${children.trim()}\n\n`;
+        }
+
+        if (/MsoHeading3/i.test(classes)) {
+            return `### ${children.trim()}\n\n`;
+        }
+
+        if (/MsoHeading2/i.test(classes)) {
+            return `## ${children.trim()}\n\n`;
+        }
+
         return `${children.trim()}\n\n`;
     }
 
@@ -494,10 +534,14 @@ export function MarkdownEditor({
                             const htmlContainsTable = /(?:^|\n)\|.*\|\n\|(?:\s*:?-+:?\s*\|)+/.test(
                                 convertedHtml,
                             );
-                            const pastedContent = html && (!plainText.includes("\t") || htmlContainsTable)
-                                ? convertedHtml
-                                : convertPastedText(plainText);
-                            onChange(`${value.slice(0, start)}${pastedContent}${value.slice(end)}`);
+                            const pastedContent =
+                                html && (!plainText.includes("\t") || htmlContainsTable) && convertedHtml
+                                    ? convertedHtml
+                                    : convertPastedText(plainText);
+                            const currentValue = textarea.value;
+                            onChange(
+                                `${currentValue.slice(0, start)}${pastedContent}${currentValue.slice(end)}`,
+                            );
                             requestAnimationFrame(() => {
                                 textarea.focus();
                                 const cursor = start + pastedContent.length;
