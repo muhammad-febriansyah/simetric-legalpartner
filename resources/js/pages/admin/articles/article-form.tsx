@@ -27,6 +27,7 @@ export type ArticleFormData = {
     coverAlt: string | null;
     authorName: string;
     status: "draft" | "published";
+    publishedAt: string | null;
     metaTitle: string | null;
     metaDescription: string | null;
 };
@@ -319,6 +320,23 @@ export function ArticleForm({ article = null }: { article?: ArticleFormData | nu
                                             <option value="published">Terbitkan</option>
                                         </select>
                                         <InputError message={errors.status} />
+                                    </div>
+                                    <div className="grid content-start gap-2">
+                                        <Label htmlFor="article_published_at">
+                                            Jadwalkan publikasi
+                                        </Label>
+                                        <Input
+                                            id="article_published_at"
+                                            name="published_at"
+                                            type="datetime-local"
+                                            defaultValue={article?.publishedAt ?? ""}
+                                            aria-invalid={Boolean(errors.published_at)}
+                                        />
+                                        <p className="text-xs leading-5 text-muted-foreground">
+                                            Pilih tanggal dan waktu terbit. Kosongkan untuk terbit
+                                            sekarang.
+                                        </p>
+                                        <InputError message={errors.published_at} />
                                     </div>
                                 </div>
                             </section>

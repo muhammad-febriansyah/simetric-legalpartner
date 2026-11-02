@@ -50,7 +50,10 @@ function formatDate(date: string | null): string {
         return "—";
     }
 
-    return new Intl.DateTimeFormat("id-ID", { dateStyle: "medium" }).format(new Date(date));
+    return new Intl.DateTimeFormat("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short",
+    }).format(new Date(date));
 }
 
 export default function AdminArticlesIndex({
@@ -96,25 +99,33 @@ export default function AdminArticlesIndex({
                 }),
                 columnHelper.accessor("status", {
                     header: "Status",
-                    cell: ({ getValue, row }) => (
-                        <div className="grid justify-items-start gap-1">
-                            <Badge
-                                variant="secondary"
-                                className={
-                                    getValue() === "published"
-                                        ? "bg-emerald-50 text-emerald-700"
-                                        : "bg-slate-100 text-slate-600"
-                                }
-                            >
-                                {getValue() === "published" ? "Terbit" : "Draft"}
-                            </Badge>
-                            {getValue() === "published" && (
-                                <span className="whitespace-nowrap text-xs text-muted-foreground">
-                                    {formatDate(row.original.publishedAt)}
-                                </span>
-                            )}
-                        </div>
-                    ),
+                    cell: ({ getValue, row }) => {
+                        const isPublished = getValue() === "published";
+                        const isScheduled =
+                            isPublished &&
+                            row.original.publishedAt !== null &&
+                            new Date(row.original.publishedAt).getTime() > Date.now();
+
+                        return (
+                            <div className="grid justify-items-start gap-1">
+                                <Badge
+                                    variant="secondary"
+                                    className={
+                                        isPublished
+                                            ? "bg-emerald-50 text-emerald-700"
+                                            : "bg-slate-100 text-slate-600"
+                                    }
+                                >
+                                    {isScheduled ? "Terjadwal" : isPublished ? "Terbit" : "Draft"}
+                                </Badge>
+                                {isPublished && (
+                                    <span className="whitespace-nowrap text-xs text-muted-foreground">
+                                        {formatDate(row.original.publishedAt)}
+                                    </span>
+                                )}
+                            </div>
+                        );
+                    },
                 }),
                 columnHelper.display({
                     id: "actions",

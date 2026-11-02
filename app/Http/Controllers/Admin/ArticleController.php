@@ -91,6 +91,7 @@ class ArticleController extends Controller
                 'coverAlt' => $article->cover_alt,
                 'authorName' => $article->author_name,
                 'status' => $article->status,
+                'publishedAt' => $article->published_at?->format('Y-m-d\\TH:i'),
                 'metaTitle' => $article->meta_title,
                 'metaDescription' => $article->meta_description,
             ],
@@ -148,7 +149,11 @@ class ArticleController extends Controller
             'cover_alt' => $validated['cover_alt'] ?? null,
             'author_name' => $validated['author_name'],
             'status' => $status,
-            'published_at' => $status === 'published' ? ($article?->published_at ?? now()) : null,
+            'published_at' => $status === 'published'
+                ? (array_key_exists('published_at', $validated)
+                    ? ($validated['published_at'] ?? now())
+                    : ($article?->published_at ?? now()))
+                : null,
             'meta_title' => $validated['meta_title'] ?? null,
             'meta_description' => $validated['meta_description'] ?? null,
         ];

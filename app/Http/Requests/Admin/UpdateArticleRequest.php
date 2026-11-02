@@ -33,6 +33,7 @@ class UpdateArticleRequest extends FormRequest
             'cover_alt' => ['nullable', 'string', 'max:255'],
             'author_name' => ['required', 'string', 'max:150'],
             'status' => ['required', Rule::in(['draft', 'published'])],
+            'published_at' => ['nullable', 'date'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
         ];
