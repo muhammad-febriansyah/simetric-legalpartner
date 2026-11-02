@@ -384,6 +384,16 @@ export default function Partnership({
                                             aria-invalid={Boolean(form.errors.email)}
                                         />
                                         <InputError message={form.errors.email} />
+                                        <p className="text-xs leading-5 text-slate-500">
+                                            Atau email kami di{" "}
+                                            <a
+                                                href="mailto:cs@legalpartner.id"
+                                                className="font-medium text-[#2547F9] underline underline-offset-4"
+                                            >
+                                                cs@legalpartner.id
+                                            </a>
+                                            .
+                                        </p>
                                     </div>
                                     <div className="grid gap-2">
                                         <Label htmlFor="partnership_type">
