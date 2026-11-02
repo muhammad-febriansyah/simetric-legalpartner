@@ -122,11 +122,11 @@ function convertPastedNode(node: Node): string {
     if (tag === "br") {
         return "\n";
     }
-    if (isBold) {
-        return `**${children.trim()}**`;
-    }
-    if (isItalic) {
-        return `*${children.trim()}*`;
+    if (tag === "a") {
+        const href = node.getAttribute("href") ?? "";
+        return /^(https?:\/\/|mailto:)/i.test(href)
+            ? `[${children.trim()}](${href})`
+            : children;
     }
     if (
         ["h1", "h2", "h3"].includes(tag) ||
@@ -148,10 +148,21 @@ function convertPastedNode(node: Node): string {
     if (tag === "ul") {
         return `${children}\n`;
     }
-    if (["p", "div", "section", "blockquote"].includes(tag)) {
+    if (tag === "blockquote") {
+        return `${children.trim().split("\n").map((line) => `> ${line}`).join("\n")}\n\n`;
+    }
+    if (["p", "div", "section"].includes(tag)) {
+        let formattedChildren = children.trim();
+        if (isBold) {
+            formattedChildren = `**${formattedChildren}**`;
+        }
+        if (isItalic) {
+            formattedChildren = `*${formattedChildren}*`;
+        }
+
         if (wordList) {
             const isNumbered = /^\d+[.)]?$/.test(listMarker);
-            return `${isNumbered ? "1." : "-"} ${children.trim()}\n`;
+            return `${isNumbered ? "1." : "-"} ${formattedChildren}\n`;
         }
 
         if (/MsoTitle|MsoHeading1/i.test(classes)) {
@@ -166,7 +177,14 @@ function convertPastedNode(node: Node): string {
             return `## ${children.trim()}\n\n`;
         }
 
-        return `${children.trim()}\n\n`;
+        return `${formattedChildren}\n\n`;
+    }
+
+    if (isBold) {
+        return `**${children.trim()}**`;
+    }
+    if (isItalic) {
+        return `*${children.trim()}*`;
     }
 
     return children;
@@ -531,17 +549,15 @@ export function MarkdownEditor({
                             const start = textarea.selectionStart;
                             const end = textarea.selectionEnd;
                             const convertedHtml = html ? convertPastedHtml(html) : "";
-                            const htmlContainsTable = /(?:^|\n)\|.*\|\n\|(?:\s*:?-+:?\s*\|)+/.test(
-                                convertedHtml,
-                            );
-                            const pastedContent =
-                                html && (!plainText.includes("\t") || htmlContainsTable) && convertedHtml
-                                    ? convertedHtml
-                                    : convertPastedText(plainText);
+                            const pastedContent = convertedHtml || convertPastedText(plainText);
                             const currentValue = textarea.value;
                             onChange(
                                 `${currentValue.slice(0, start)}${pastedContent}${currentValue.slice(end)}`,
                             );
+                            if (convertedHtml) {
+                                setActiveTab("preview");
+                                return;
+                            }
                             requestAnimationFrame(() => {
                                 textarea.focus();
                                 const cursor = start + pastedContent.length;

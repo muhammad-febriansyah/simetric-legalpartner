@@ -137,7 +137,8 @@ class ArticleController extends Controller
     {
         $title = $validated['title'];
         $slug = trim((string) ($validated['slug'] ?? ''));
-        $status = $validated['status'];
+        $publicationChoice = $validated['status'];
+        $status = $publicationChoice === 'draft' ? 'draft' : 'published';
 
         return [
             'title' => $title,
@@ -149,11 +150,13 @@ class ArticleController extends Controller
             'cover_alt' => $validated['cover_alt'] ?? null,
             'author_name' => $validated['author_name'],
             'status' => $status,
-            'published_at' => $status === 'published'
-                ? (array_key_exists('published_at', $validated)
-                    ? ($validated['published_at'] ?? now())
-                    : ($article?->published_at ?? now()))
-                : null,
+            'published_at' => match ($publicationChoice) {
+                'draft' => null,
+                'scheduled' => $validated['published_at'],
+                default => $article?->status === 'published' && $article->published_at?->isPast()
+                    ? $article->published_at
+                    : now(),
+            },
             'meta_title' => $validated['meta_title'] ?? null,
             'meta_description' => $validated['meta_description'] ?? null,
         ];

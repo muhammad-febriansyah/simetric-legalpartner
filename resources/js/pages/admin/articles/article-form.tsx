@@ -47,6 +47,13 @@ export function ArticleForm({ article = null }: { article?: ArticleFormData | nu
     const [title, setTitle] = useState(article?.title ?? "");
     const [slug, setSlug] = useState(article?.slug ?? "");
     const [content, setContent] = useState(article?.content ?? "");
+    const [publicationChoice, setPublicationChoice] = useState<"draft" | "published" | "scheduled">(
+        article?.status === "published" &&
+            article.publishedAt !== null &&
+            new Date(article.publishedAt).getTime() > Date.now()
+            ? "scheduled"
+            : (article?.status ?? "draft"),
+    );
 
     function updateTitle(value: string): void {
         setTitle(value);
@@ -311,33 +318,38 @@ export function ArticleForm({ article = null }: { article?: ArticleFormData | nu
                                         <select
                                             id="article_status"
                                             name="status"
-                                            defaultValue={article?.status ?? "draft"}
+                                            value={publicationChoice}
+                                            onChange={(event) =>
+                                                setPublicationChoice(
+                                                    event.target.value as "draft" | "published" | "scheduled",
+                                                )
+                                            }
                                             required
                                             aria-invalid={Boolean(errors.status)}
                                             className="h-10 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50"
                                         >
                                             <option value="draft">Draft</option>
-                                            <option value="published">Terbitkan</option>
+                                            <option value="published">Terbitkan sekarang</option>
+                                            <option value="scheduled">Jadwalkan publikasi</option>
                                         </select>
                                         <InputError message={errors.status} />
                                     </div>
-                                    <div className="grid content-start gap-2">
-                                        <Label htmlFor="article_published_at">
-                                            Jadwalkan publikasi
-                                        </Label>
-                                        <Input
-                                            id="article_published_at"
-                                            name="published_at"
-                                            type="datetime-local"
-                                            defaultValue={article?.publishedAt ?? ""}
-                                            aria-invalid={Boolean(errors.published_at)}
-                                        />
-                                        <p className="text-xs leading-5 text-muted-foreground">
-                                            Pilih tanggal dan waktu terbit. Kosongkan untuk terbit
-                                            sekarang.
-                                        </p>
-                                        <InputError message={errors.published_at} />
-                                    </div>
+                                    {publicationChoice === "scheduled" && (
+                                        <div className="grid content-start gap-2">
+                                            <Label htmlFor="article_published_at">
+                                                Tanggal dan waktu publikasi
+                                            </Label>
+                                            <Input
+                                                id="article_published_at"
+                                                name="published_at"
+                                                type="datetime-local"
+                                                defaultValue={article?.publishedAt ?? ""}
+                                                required
+                                                aria-invalid={Boolean(errors.published_at)}
+                                            />
+                                            <InputError message={errors.published_at} />
+                                        </div>
+                                    )}
                                 </div>
                             </section>
 

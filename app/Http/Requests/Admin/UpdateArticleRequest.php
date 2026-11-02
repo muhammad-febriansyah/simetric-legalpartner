@@ -32,8 +32,8 @@ class UpdateArticleRequest extends FormRequest
             'cover_image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
             'cover_alt' => ['nullable', 'string', 'max:255'],
             'author_name' => ['required', 'string', 'max:150'],
-            'status' => ['required', Rule::in(['draft', 'published'])],
-            'published_at' => ['nullable', 'date'],
+            'status' => ['required', Rule::in(['draft', 'published', 'scheduled'])],
+            'published_at' => ['required_if:status,scheduled', 'nullable', 'date', 'after:now'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
         ];
