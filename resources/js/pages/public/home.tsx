@@ -188,10 +188,10 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                         <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
                             <span aria-hidden="true" className="absolute inset-x-[6%] bottom-[6%] top-[12%] rounded-[3rem] bg-gradient-to-br from-[#E2E9FF] via-[#EDF1FF] to-white" />
                             <img
-                                src="/images/hero-legalitas-digital.png"
-                                alt="Konsultan legal mengurus dokumen usaha melalui laptop"
-                                width={1448}
-                                height={1086}
+                                src="/images/hero-legalpartner-team.jpg"
+                                alt="Tim LegalPartner.ID berdiskusi bersama di ruang rapat"
+                                width={1600}
+                                height={900}
                                 className="relative w-full select-none"
                                 draggable={false}
                             />
