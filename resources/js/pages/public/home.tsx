@@ -292,11 +292,11 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                         className="w-[min(82vw,22rem)] shrink-0 snap-start"
                                     >
                                         <Link href={servicesIndex()} className="group flex min-h-[19rem] h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-5 transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-[#2547F9]/35 hover:shadow-[0_16px_34px_-28px_rgba(37,71,249,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] sm:p-6">
-                                            <span className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#FFE27A] px-3 py-2.5">
+                                            <span className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#2547F9] px-3 py-2.5">
                                                 <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#2547F9]">
                                                     <Icon aria-hidden="true" className="size-5" />
                                                 </span>
-                                                <h3 className="text-sm font-bold leading-snug tracking-[0.04em] text-slate-950 uppercase">{category.name}</h3>
+                                                <h3 className="text-sm font-bold leading-snug tracking-[0.04em] text-white uppercase">{category.name}</h3>
                                             </span>
                                             {category.description && <p className="mt-4 text-sm leading-6 text-slate-500">{category.description}</p>}
                                             <span className="mt-auto flex items-center justify-between gap-3 pt-6 text-xs font-medium text-slate-400">
