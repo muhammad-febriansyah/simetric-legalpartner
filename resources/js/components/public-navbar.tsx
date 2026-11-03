@@ -359,11 +359,11 @@ export function PublicNavbar({ className }: { className?: string }) {
 
                                                     return (
                                                         <section key={category.slug} className="mb-5 break-inside-avoid">
-                                                            <div className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#FFE47A] px-3 py-2.5 sm:px-3.5">
+                                                            <div className="flex min-h-[68px] items-center gap-3 rounded-xl bg-[#EEF1FF] px-3 py-2.5 sm:px-3.5">
                                                                 <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#2547F9] shadow-sm">
                                                                     <CategoryIcon aria-hidden="true" className="size-5" />
                                                                 </span>
-                                                                <h2 className="text-[12px] font-bold uppercase leading-snug tracking-[0.075em] text-slate-900 sm:text-[13px]">{category.name}</h2>
+                                                                <h2 className="text-[13px] font-semibold uppercase leading-snug tracking-[0.075em] text-[#2547F9]">{category.name}</h2>
                                                             </div>
                                                             <ul className="mt-2.5 space-y-0.5">
                                                                 {category.services.length > 0 ? (

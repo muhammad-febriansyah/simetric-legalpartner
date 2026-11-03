@@ -17,8 +17,8 @@ class LegalPartnerDemoSeeder extends Seeder
         $categoryDefinitions = [
             [
                 'legacySlug' => 'kategori-demo-1',
-                'slug' => 'pendirian-badan-usaha',
-                'name' => 'Pendirian Badan Usaha',
+                'slug' => 'legalitas-usaha',
+                'name' => 'Legalitas Usaha',
                 'description' => 'Contoh kategori untuk layanan pendirian dan persiapan badan usaha.',
             ],
             [
@@ -38,12 +38,6 @@ class LegalPartnerDemoSeeder extends Seeder
                 'slug' => 'perpajakan',
                 'name' => 'Perpajakan',
                 'description' => 'Contoh kategori untuk administrasi dan konsultasi perpajakan.',
-            ],
-            [
-                'legacySlug' => 'kategori-demo-5',
-                'slug' => 'legal-korporasi',
-                'name' => 'Legal Korporasi',
-                'description' => 'Contoh kategori untuk kebutuhan legal korporasi.',
             ],
         ];
 

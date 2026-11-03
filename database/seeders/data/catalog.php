@@ -6,19 +6,17 @@
  */
 return [
     'categories' => [
-        ['slug' => 'pendirian-badan-usaha', 'name' => 'Pendirian Badan Usaha', 'description' => 'Pendirian PT, CV, PMA, dan yayasan lengkap dengan akta, SK Kemenkumham, NPWP, dan NIB.'],
-        ['slug' => 'perizinan-usaha', 'name' => 'Perizinan Usaha', 'description' => 'NIB, OSS RBA, izin operasional, SBUJK, dan persetujuan bangunan gedung.'],
+        ['slug' => 'legalitas-usaha', 'name' => 'Legalitas Usaha', 'description' => 'Pendirian dan perubahan badan usaha, kontrak bisnis, serta legalitas untuk operasional dan izin sektor khusus.'],
+        ['slug' => 'perizinan-usaha', 'name' => 'Perizinan Usaha', 'description' => 'NIB, OSS RBA, izin operasional, SBUJK, persetujuan bangunan gedung, dan izin sektor khusus.'],
         ['slug' => 'kekayaan-intelektual', 'name' => 'Kekayaan Intelektual', 'description' => 'Pendaftaran merek dan hak cipta ke DJKI untuk melindungi aset usaha Anda.'],
         ['slug' => 'perpajakan', 'name' => 'Perpajakan', 'description' => 'Pendampingan pajak bulanan, tahunan, dan penyusunan laporan keuangan.'],
-        ['slug' => 'legal-korporasi', 'name' => 'Legal Korporasi', 'description' => 'Perubahan akta, penutupan perusahaan, dan penyusunan perjanjian bisnis.'],
         ['slug' => 'ketenagakerjaan-hr', 'name' => 'Ketenagakerjaan & HR', 'description' => 'Peraturan perusahaan dan dokumen ketenagakerjaan sesuai regulasi terbaru.'],
         ['slug' => 'properti-pertanahan', 'name' => 'Properti & Pertanahan', 'description' => 'Pengecekan sertifikat, balik nama, dan pendampingan transaksi properti.'],
-        ['slug' => 'perizinan-sektor-khusus', 'name' => 'Perizinan Sektor Khusus', 'description' => 'Izin apotek, klinik, dan izin edar produk untuk sektor yang diatur ketat.'],
     ],
 
     'services' => [
         [
-            'category' => 'pendirian-badan-usaha', 'slug' => 'pendirian-pt', 'name' => 'Pendirian Perseroan Terbatas (PT)', 'featured' => true,
+            'category' => 'legalitas-usaha', 'slug' => 'pendirian-pt', 'name' => 'Pendirian Perseroan Terbatas (PT)', 'featured' => true,
             'image_alt' => 'Tim sedang berdiskusi di ruang kerja berkaca',
             'excerpt' => 'Pendirian PT lengkap dari akta notaris, SK Kemenkumham, NPWP badan, sampai NIB dalam satu paket.',
             'description' => "Pendirian PT cocok untuk usaha yang ingin memisahkan harta pribadi dengan harta perusahaan dan siap bekerja sama dengan mitra, bank, atau investor.\n\nTim kami membantu mulai dari pengecekan nama, penyusunan draf akta bersama notaris rekanan, pengesahan SK Kemenkumham, hingga NPWP badan dan NIB melalui OSS.",
@@ -37,7 +35,7 @@ return [
             ],
         ],
         [
-            'category' => 'pendirian-badan-usaha', 'slug' => 'pt-perorangan', 'name' => 'Pendirian PT Perorangan', 'featured' => true,
+            'category' => 'legalitas-usaha', 'slug' => 'pt-perorangan', 'name' => 'Pendirian PT Perorangan', 'featured' => true,
             'image_alt' => 'Pelaku usaha mandiri bekerja dengan laptop dan buku catatan',
             'excerpt' => 'Badan hukum untuk satu pendiri tanpa akta notaris, cocok untuk usaha mikro dan kecil.',
             'description' => "PT Perorangan dirancang untuk pelaku usaha mikro dan kecil yang ingin berbadan hukum tanpa mengajak mitra. Pendaftaran dilakukan secara elektronik melalui AHU Online dengan surat pernyataan pendirian.\n\nKami membantu pengisian data, pengesahan, serta pengurusan NIB agar usaha Anda langsung siap berjalan.",
@@ -56,7 +54,7 @@ return [
             ],
         ],
         [
-            'category' => 'pendirian-badan-usaha', 'slug' => 'pendirian-cv', 'name' => 'Pendirian CV', 'featured' => false,
+            'category' => 'legalitas-usaha', 'slug' => 'pendirian-cv', 'name' => 'Pendirian CV', 'featured' => false,
             'image_alt' => 'Dua rekan usaha berdiskusi di kafe',
             'excerpt' => 'Persekutuan komanditer dengan akta notaris, pendaftaran Kemenkumham, NPWP, dan NIB.',
             'description' => "CV cocok untuk usaha yang dijalankan beberapa orang dengan struktur sederhana: sekutu aktif yang mengelola dan sekutu pasif yang menanam modal.\n\nKami mengurus akta pendirian, pendaftaran di Sistem Administrasi Badan Usaha, NPWP, dan perizinan dasar.",
@@ -75,7 +73,7 @@ return [
             ],
         ],
         [
-            'category' => 'pendirian-badan-usaha', 'slug' => 'pendirian-pma', 'name' => 'Pendirian PT PMA', 'featured' => false,
+            'category' => 'legalitas-usaha', 'slug' => 'pendirian-pma', 'name' => 'Pendirian PT PMA', 'featured' => false,
             'image_alt' => 'Panorama gedung perkantoran kota besar',
             'excerpt' => 'Pendirian perusahaan penanaman modal asing lengkap dengan perizinan BKPM dan OSS.',
             'description' => "PT PMA diperuntukkan bagi investor asing atau perusahaan dengan kepemilikan modal asing. Prosesnya mencakup penentuan bidang usaha terbuka, nilai investasi, dan pelaporan penanaman modal.\n\nKami mendampingi dari akta, pengesahan, NIB, hingga laporan kegiatan penanaman modal pertama.",
@@ -94,7 +92,7 @@ return [
             ],
         ],
         [
-            'category' => 'pendirian-badan-usaha', 'slug' => 'pendirian-yayasan', 'name' => 'Pendirian Yayasan', 'featured' => false,
+            'category' => 'legalitas-usaha', 'slug' => 'pendirian-yayasan', 'name' => 'Pendirian Yayasan', 'featured' => false,
             'image_alt' => 'Sekelompok orang berkumpul di ruang publik',
             'excerpt' => 'Pendirian yayasan sosial, pendidikan, atau keagamaan lengkap dengan akta dan pengesahan Kemenkumham.',
             'description' => "Yayasan adalah badan hukum yang bergerak di bidang sosial, keagamaan, dan kemanusiaan. Pendirian memerlukan kekayaan awal yang dipisahkan dari pendiri serta organ pembina, pengurus, dan pengawas.\n\nKami membantu penyusunan akta, pengesahan, NPWP yayasan, dan penyiapan dokumen operasional awal.",
@@ -265,7 +263,7 @@ return [
             ],
         ],
         [
-            'category' => 'legal-korporasi', 'slug' => 'perubahan-akta', 'name' => 'Perubahan Akta Perusahaan', 'featured' => false,
+            'category' => 'legalitas-usaha', 'slug' => 'perubahan-akta', 'name' => 'Perubahan Akta Perusahaan', 'featured' => false,
             'image_alt' => 'Pena-pena di atas meja kerja kayu',
             'excerpt' => 'Perubahan anggaran dasar, pengurus, modal, alamat, atau kegiatan usaha beserta pengesahannya.',
             'description' => "Perubahan data perusahaan harus dituangkan dalam akta dan dilaporkan atau disahkan ke Kemenkumham.\n\nKami menangani seluruh tahapan, termasuk keputusan pemegang saham, akta perubahan, hingga penyesuaian NIB dan NPWP.",
@@ -284,7 +282,7 @@ return [
             ],
         ],
         [
-            'category' => 'legal-korporasi', 'slug' => 'penutupan-pt', 'name' => 'Penutupan & Likuidasi PT', 'featured' => false,
+            'category' => 'legalitas-usaha', 'slug' => 'penutupan-pt', 'name' => 'Penutupan & Likuidasi PT', 'featured' => false,
             'image_alt' => 'Ruangan kosong dengan siluet orang berdiri',
             'excerpt' => 'Pembubaran dan likuidasi PT dengan tertib, termasuk penghapusan NPWP dan pencabutan izin.',
             'description' => "Menutup perusahaan yang tidak lagi aktif perlu dilakukan dengan benar agar tidak meninggalkan kewajiban pajak maupun hukum.\n\nKami mengurus RUPS pembubaran, penunjukan likuidator, pengumuman, hingga pencabutan NIB dan penghapusan NPWP.",
@@ -303,7 +301,7 @@ return [
             ],
         ],
         [
-            'category' => 'legal-korporasi', 'slug' => 'kontrak-perjanjian', 'name' => 'Penyusunan Kontrak & Perjanjian', 'featured' => false,
+            'category' => 'legalitas-usaha', 'slug' => 'kontrak-perjanjian', 'name' => 'Penyusunan Kontrak & Perjanjian', 'featured' => false,
             'image_alt' => 'Buku dan alat tulis di atas meja kayu',
             'excerpt' => 'Draf dan review perjanjian kerja sama, sewa, jual beli, vendor, dan kerahasiaan.',
             'description' => "Perjanjian yang jelas mencegah sengketa di kemudian hari dan melindungi kepentingan kedua belah pihak.\n\nKami menyusun draf baru atau mengulas draf yang Anda terima, lalu memberi catatan risiko dan usulan perbaikan.",
@@ -360,7 +358,7 @@ return [
             ],
         ],
         [
-            'category' => 'perizinan-sektor-khusus', 'slug' => 'izin-apotek-klinik', 'name' => 'Izin Apotek & Klinik', 'featured' => false,
+            'category' => 'perizinan-usaha', 'slug' => 'izin-apotek-klinik', 'name' => 'Izin Apotek & Klinik', 'featured' => false,
             'image_alt' => 'Ruang kerja minimalis dengan laptop putih',
             'excerpt' => 'Perizinan apotek, klinik pratama, dan praktik tenaga kesehatan sesuai standar Kemenkes.',
             'description' => "Usaha pelayanan kesehatan memerlukan izin berlapis, mulai dari legalitas badan usaha, persetujuan lokasi, hingga izin operasional dari dinas kesehatan.\n\nKami menyusun peta izin, melengkapi persyaratan sarana dan tenaga, serta mendampingi proses verifikasi.",
@@ -379,7 +377,7 @@ return [
             ],
         ],
         [
-            'category' => 'perizinan-sektor-khusus', 'slug' => 'izin-edar-bpom', 'name' => 'Izin Edar BPOM', 'featured' => false,
+            'category' => 'perizinan-usaha', 'slug' => 'izin-edar-bpom', 'name' => 'Izin Edar BPOM', 'featured' => false,
             'image_alt' => 'Hidangan dalam mangkuk di atas talenan kayu',
             'excerpt' => 'Pendaftaran izin edar pangan olahan, kosmetik, dan obat tradisional di BPOM.',
             'description' => "Produk pangan olahan, kosmetik, dan obat tradisional yang diedarkan luas harus memiliki izin edar.\n\nKami membantu penentuan kategori, penyiapan dokumen produk, pengajuan, dan menindaklanjuti evaluasi BPOM.",
