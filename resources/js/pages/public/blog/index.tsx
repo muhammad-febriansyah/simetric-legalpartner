@@ -127,7 +127,7 @@ export default function BlogIndex({ articles, canonicalUrl, categories, filters 
                             href={articleShow(featured.slug)}
                             className="group mb-10 grid overflow-hidden rounded-3xl border border-slate-200 bg-white transition hover:border-[#2547F9]/30 hover:shadow-[0_24px_50px_-28px_rgba(15,23,42,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2 lg:grid-cols-[1.25fr_1fr]"
                         >
-                            <div className="aspect-[16/10] overflow-hidden bg-slate-100 lg:aspect-auto lg:min-h-[360px]">
+                            <div className="aspect-video overflow-hidden bg-slate-100 lg:aspect-auto lg:min-h-[360px]">
                                 {featured.coverImage && (
                                     <img src={featured.coverImage} alt={featured.coverAlt ?? ''} className="size-full object-contain" />
                                 )}

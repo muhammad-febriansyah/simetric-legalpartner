@@ -38,7 +38,7 @@ export function ArticleCard({ article }: { article: ArticleSummary }) {
             href={articleShow(article.slug)}
             className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-200 hover:-translate-y-0.5 hover:border-[#2547F9]/30 hover:shadow-[0_18px_40px_-24px_rgba(15,23,42,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
         >
-            <div className="aspect-[16/10] overflow-hidden bg-slate-100">
+            <div className="aspect-video overflow-hidden bg-slate-100">
                 {article.coverImage && (
                     <img
                         src={article.coverImage}
