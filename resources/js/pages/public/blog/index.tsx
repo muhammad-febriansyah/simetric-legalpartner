@@ -129,7 +129,7 @@ export default function BlogIndex({ articles, canonicalUrl, categories, filters 
                         >
                             <div className="aspect-[16/10] overflow-hidden bg-slate-100 lg:aspect-auto lg:min-h-[360px]">
                                 {featured.coverImage && (
-                                    <img src={featured.coverImage} alt={featured.coverAlt ?? ''} className="size-full object-cover transition duration-500 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
+                                    <img src={featured.coverImage} alt={featured.coverAlt ?? ''} className="size-full object-contain" />
                                 )}
                             </div>
                             <div className="flex flex-col justify-center p-6 sm:p-10">

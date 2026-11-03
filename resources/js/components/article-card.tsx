@@ -44,7 +44,7 @@ export function ArticleCard({ article }: { article: ArticleSummary }) {
                         src={article.coverImage}
                         alt={article.coverAlt ?? ''}
                         loading="lazy"
-                        className="size-full object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                        className="size-full object-contain"
                     />
                 )}
             </div>
