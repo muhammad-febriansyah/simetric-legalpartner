@@ -29,6 +29,8 @@ class UpdateWebsiteSettingsRequest extends FormRequest
             'contact_phone' => ['nullable', 'string', 'max:40'],
             'whatsapp_number' => ['nullable', 'string', 'max:40'],
             'business_hours' => ['nullable', 'string', 'max:120'],
+            'whatsapp_consult_message' => ['nullable', 'string', 'max:1000'],
+            'whatsapp_service_message' => ['nullable', 'string', 'max:1000'],
             'contact_address' => ['nullable', 'string', 'max:500'],
             'google_maps_keyword' => ['nullable', 'string', 'max:180'],
             'google_maps_embed_url' => ['nullable', 'url', 'max:1000'],

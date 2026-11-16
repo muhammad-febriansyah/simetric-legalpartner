@@ -9,6 +9,7 @@ import {
     MapPin,
     Palette,
     Phone,
+    MessageCircle,
     Save,
     Search,
     Share2,
@@ -20,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { DEFAULT_CONSULT_MESSAGE, DEFAULT_SERVICE_MESSAGE } from '@/lib/whatsapp';
 
 type WebsiteSettings = Record<string, string>;
 type WebsiteAssets = { logo: string | null; favicon: string | null; og_image: string | null };
@@ -336,6 +338,21 @@ export default function WebsiteSettingsPage({ settings, assets }: { settings: We
                                         <TextField id="whatsapp_number" label="Nomor WhatsApp" value={settings.whatsapp_number ?? ''} error={errors.whatsapp_number} placeholder="62812... (format internasional)" />
                                         <TextField id="business_hours" label="Jam operasional" value={settings.business_hours ?? ''} error={errors.business_hours} placeholder="Senin - Jumat, 08.00 - 17.00 WIB" />
                                         <TextAreaField id="contact_address" label="Alamat" value={settings.contact_address ?? ''} error={errors.contact_address} placeholder="Alamat kantor" rows={2} />
+                                    </div>
+                                </section>
+                                <section className="mt-5 flex flex-col gap-5 rounded-2xl border border-border bg-white p-5 shadow-sm shadow-slate-900/[0.02] sm:p-6">
+                                    <SectionHeading icon={MessageCircle} title="Template pesan WhatsApp" description="Teks yang otomatis terisi saat pengunjung menekan tombol konsultasi. Kosongkan untuk memakai teks bawaan." />
+                                    <div className="grid gap-4 md:grid-cols-2">
+                                        <div className="grid content-start gap-2">
+                                            <TextAreaField id="whatsapp_consult_message" label="Tombol Konsultasi gratis" value={settings.whatsapp_consult_message ?? ''} error={errors.whatsapp_consult_message} placeholder={DEFAULT_CONSULT_MESSAGE} rows={6} maxLength={1000} />
+                                            <p className="text-xs leading-5 text-muted-foreground">Dipakai di navbar, footer, beranda, blog, dan halaman lain.</p>
+                                        </div>
+                                        <div className="grid content-start gap-2">
+                                            <TextAreaField id="whatsapp_service_message" label="Tombol WhatsApp di halaman layanan" value={settings.whatsapp_service_message ?? ''} error={errors.whatsapp_service_message} placeholder={DEFAULT_SERVICE_MESSAGE} rows={6} maxLength={1000} />
+                                            <p className="text-xs leading-5 text-muted-foreground">
+                                                Gunakan <code className="rounded bg-muted px-1">{'{layanan}'}</code>, <code className="rounded bg-muted px-1">{'{paket}'}</code>, dan <code className="rounded bg-muted px-1">{'{harga}'}</code>. Tanpa paket yang dipilih, paket berisi "Belum memilih" dan harga berisi "Konsultasikan".
+                                            </p>
+                                        </div>
                                     </div>
                                 </section>
                                 </TabsContent>

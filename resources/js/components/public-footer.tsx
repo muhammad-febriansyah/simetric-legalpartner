@@ -11,6 +11,7 @@ import { index as partnershipIndex } from '@/actions/App/Http/Controllers/Site/P
 import { index as servicesIndex, show as serviceShow } from '@/actions/App/Http/Controllers/Site/ServiceController';
 import { SocialIcon } from '@/components/social-icons';
 import { home } from '@/routes';
+import { ConsultLink } from '@/components/consult-link';
 
 type SiteFooter = {
     name: string;
@@ -72,13 +73,12 @@ export function PublicFooter() {
                             Ceritakan rencana usaha Anda. Tim kami bantu petakan izin, dokumen, dan biayanya sebelum Anda memutuskan.
                         </p>
                     </div>
-                    <Link
-                        href={`${partnershipIndex().url}#form-pendaftaran`}
+                    <ConsultLink
                         className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#2547F9] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#1E3EDB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2"
                     >
                         Konsultasi gratis
                         <ArrowRight aria-hidden="true" className="size-4" />
-                    </Link>
+                    </ConsultLink>
                 </div>
 
                 <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.3fr]">

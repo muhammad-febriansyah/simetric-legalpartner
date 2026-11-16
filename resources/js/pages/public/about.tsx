@@ -1,10 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRight, BookOpen, BriefcaseBusiness, Check, PackageCheck } from 'lucide-react';
-import { index as partnershipIndex } from '@/actions/App/Http/Controllers/Site/PartnershipApplicationController';
 import { show as contactShow } from '@/actions/App/Http/Controllers/Site/ContactController';
 import { MarkdownContent } from '@/components/admin/markdown-editor';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicNavbar } from '@/components/public-navbar';
+import { ConsultLink } from '@/components/consult-link';
 
 type AboutPageData = {
     title: string;
@@ -45,7 +45,6 @@ function parseTitledList(markdown: string, ordered: boolean): { title: string; t
 export default function About({ aboutPage, stats }: Props) {
     const steps = parseTitledList(aboutPage.process, true);
     const features = parseTitledList(aboutPage.features, false);
-    const consultHref = `${partnershipIndex().url}#form-pendaftaran`;
 
     return (
         <>
@@ -61,10 +60,10 @@ export default function About({ aboutPage, stats }: Props) {
                             <h1 className="mt-3 text-4xl font-semibold leading-[1.1] tracking-tight text-slate-950 sm:text-5xl">{aboutPage.title}</h1>
                             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">{aboutPage.subtitle}</p>
                             <div className="mt-8 flex flex-wrap gap-3">
-                                <Link href={consultHref} className="inline-flex h-12 items-center gap-2 rounded-full bg-[#2547F9] px-6 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_10px_22px_-10px_rgba(37,71,249,0.7)] transition-colors hover:bg-[#1E3EDB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2">
+                                <ConsultLink className="inline-flex h-12 items-center gap-2 rounded-full bg-[#2547F9] px-6 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_10px_22px_-10px_rgba(37,71,249,0.7)] transition-colors hover:bg-[#1E3EDB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2">
                                     Konsultasi gratis
                                     <ArrowRight aria-hidden="true" className="size-4" />
-                                </Link>
+                                </ConsultLink>
                                 <Link href={contactShow()} className="inline-flex h-12 items-center rounded-full border border-slate-300 bg-white px-6 text-sm font-semibold text-slate-800 transition-colors hover:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2">
                                     Hubungi kami
                                 </Link>

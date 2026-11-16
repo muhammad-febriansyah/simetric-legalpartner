@@ -199,17 +199,17 @@ class HandleInertiaRequests extends Middleware
     /**
      * Public contact details shown in the navbar utility bar.
      *
-     * @return array{email: ?string, whatsapp: ?string, hours: ?string, socials: list<array{key: string, label: string, url: string}>}
+     * @return array{email: ?string, whatsapp: ?string, hours: ?string, consultMessage: ?string, socials: list<array{key: string, label: string, url: string}>}
      */
     private function siteContact(Request $request): array
     {
         if ($request->is('admin/*', 'dashboard', 'settings/*')) {
-            return ['email' => null, 'whatsapp' => null, 'hours' => null, 'socials' => []];
+            return ['email' => null, 'whatsapp' => null, 'hours' => null, 'consultMessage' => null, 'socials' => []];
         }
 
         $settings = SiteSetting::query()
             ->whereIn('key', [
-                'contact_email', 'whatsapp_number', 'business_hours',
+                'contact_email', 'whatsapp_number', 'business_hours', 'whatsapp_consult_message',
                 'social_instagram', 'social_facebook', 'social_linkedin', 'social_tiktok', 'social_youtube', 'social_x',
             ])
             ->pluck('value', 'key');
@@ -218,6 +218,7 @@ class HandleInertiaRequests extends Middleware
             'email' => $settings->get('contact_email') ?: null,
             'whatsapp' => preg_replace('/\D+/', '', (string) $settings->get('whatsapp_number')) ?: null,
             'hours' => $settings->get('business_hours') ?: null,
+            'consultMessage' => $settings->get('whatsapp_consult_message') ?: null,
             'socials' => $this->socials($settings),
         ];
     }

@@ -45,6 +45,7 @@ import {
 import { SocialIcon } from '@/components/social-icons';
 import { categoryIcon } from '@/lib/category-icons';
 import { home } from '@/routes';
+import { ConsultLink } from '@/components/consult-link';
 
 type MenuId = 'services' | 'tools' | 'search';
 
@@ -220,7 +221,7 @@ export function PublicNavbar({ className }: { className?: string }) {
             { label: 'Tentang kami', hint: 'Profil LegalPartner.ID', href: aboutShow().url, group: 'Halaman publik' },
             { label: 'Kerja sama', hint: 'Daftar sebagai mitra', href: partnershipIndex().url, group: 'Halaman publik' },
             { label: 'Kontak kami', hint: 'WhatsApp, telepon, dan email', href: contactShow().url, group: 'Halaman publik' },
-            { label: 'Konsultasi gratis', hint: 'Kirim kebutuhan untuk konsultasi', href: `${partnershipIndex().url}#form-pendaftaran`, group: 'Halaman publik' },
+            { label: 'Konsultasi gratis', hint: 'Hubungi tim kami', href: contactShow().url, group: 'Halaman publik' },
             ...(props.siteFooter?.legalPages ?? []).map((page) => ({
                 label: page.title,
                 hint: 'Informasi dan ketentuan situs',
@@ -256,7 +257,6 @@ export function PublicNavbar({ className }: { className?: string }) {
 
     const isActive = (path: string) => url === path || url.startsWith(`${path}/`) || url.startsWith(`${path}?`);
     const blogHref = blogIndex().url;
-    const consultHref = `${partnershipIndex().url}#form-pendaftaran`;
 
     return (
         <>
@@ -402,9 +402,9 @@ export function PublicNavbar({ className }: { className?: string }) {
                                                 </Link>
                                                 <p className="text-slate-500">
                                                     Belum yakin layanan mana yang cocok?{' '}
-                                                    <Link href={consultHref} className="font-semibold text-slate-800 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-[#2547F9] hover:decoration-[#2547F9]">
+                                                    <ConsultLink className="font-semibold text-slate-800 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-[#2547F9] hover:decoration-[#2547F9]">
                                                         Konsultasi gratis
-                                                    </Link>
+                                                    </ConsultLink>
                                                 </p>
                                             </div>
                                         </div>
@@ -477,13 +477,12 @@ export function PublicNavbar({ className }: { className?: string }) {
                                 </button>
                             </div>
 
-                            <Link
-                                href={consultHref}
+                            <ConsultLink
                                 className="hidden h-10 items-center gap-2 whitespace-nowrap rounded-full bg-[#2547F9] pl-5 pr-4 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_8px_18px_-8px_rgba(37,71,249,0.7)] transition-[background-color,box-shadow] hover:bg-[#1E3EDB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2 xl:inline-flex"
                             >
                                 Konsultasi gratis
                                 <ArrowRight aria-hidden="true" className="size-4" />
-                            </Link>
+                            </ConsultLink>
 
                             <button
                                 type="button"
@@ -719,10 +718,10 @@ export function PublicNavbar({ className }: { className?: string }) {
                                 Chat WhatsApp
                             </a>
                         )}
-                        <Link href={consultHref} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#2547F9] text-sm font-semibold text-white">
+                        <ConsultLink className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#2547F9] text-sm font-semibold text-white">
                             Konsultasi gratis
                             <ArrowRight aria-hidden="true" className="size-4" />
-                        </Link>
+                        </ConsultLink>
                     </div>
                 </SheetContent>
             </Sheet>

@@ -85,6 +85,9 @@ class ServiceController extends Controller
             'whatsappNumber' => SiteSetting::query()
                 ->where('key', 'whatsapp_number')
                 ->value('value'),
+            'whatsappMessageTemplate' => SiteSetting::query()
+                ->where('key', 'whatsapp_service_message')
+                ->value('value') ?: null,
             'service' => [
                 'name' => $service->name,
                 'slug' => $service->slug,

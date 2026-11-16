@@ -3,10 +3,10 @@ import { ArrowDown, ArrowRight, BookOpen, ChevronDown, ChevronLeft, ChevronRight
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { index as kbliIndex } from '@/actions/App/Http/Controllers/Site/KbliController';
-import { index as partnershipIndex } from '@/actions/App/Http/Controllers/Site/PartnershipApplicationController';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicNavbar } from '@/components/public-navbar';
 import { home } from '@/routes';
+import { ConsultLink } from '@/components/consult-link';
 
 type KbliMapping = {
     version: number;
@@ -278,7 +278,7 @@ export default function KbliIndex({ codes, versions, filters, levels }: Props) {
                 <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:py-16">
                     <div className="flex flex-col gap-5 rounded-3xl bg-[#172F8A] px-6 py-8 text-white sm:flex-row sm:items-center sm:justify-between sm:px-10">
                         <div className="max-w-2xl"><p className="text-xs font-semibold uppercase tracking-[0.1em] text-white/45">Perlu menentukan ruang lingkup?</p><h2 className="mt-2 text-2xl font-semibold tracking-tight">Tim kami bisa bantu memetakan kebutuhan legalitas usaha.</h2></div>
-                        <Link href={`${partnershipIndex().url}#form-pendaftaran`} className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-slate-950 hover:bg-[#EEF1FF]">Konsultasi gratis <ArrowRight aria-hidden="true" className="size-4" /></Link>
+                        <ConsultLink className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-slate-950 hover:bg-[#EEF1FF]">Konsultasi gratis <ArrowRight aria-hidden="true" className="size-4" /></ConsultLink>
                     </div>
                     <p className="mt-5 inline-flex items-start gap-2 text-xs leading-5 text-slate-400"><ArrowDown aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />Informasi pada halaman ini disediakan untuk pencarian awal. Pastikan pemilihan kode dan kewajiban perizinan dikonfirmasi melalui sumber resmi.</p>
                 </section>

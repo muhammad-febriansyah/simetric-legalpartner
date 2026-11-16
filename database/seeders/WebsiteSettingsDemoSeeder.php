@@ -29,6 +29,8 @@ class WebsiteSettingsDemoSeeder extends Seeder
             'contact_phone' => '+62 21 2930 1188',
             'whatsapp_number' => '6281255500100',
             'business_hours' => 'Senin - Jumat, 08.00 - 17.00 WIB',
+            'whatsapp_consult_message' => "Halo tim LegalPartner.ID,\nSaya ingin konsultasi gratis mengenai legalitas usaha saya.\nBoleh dibantu menjelaskan layanan yang sesuai?",
+            'whatsapp_service_message' => "Halo tim LegalPartner.ID,\nSaya ingin konsultasi mengenai:\nLayanan: {layanan}\nPaket: {paket}\nHarga tertera: {harga}\nBoleh dibantu informasi persyaratan dan prosesnya?",
             'contact_address' => 'Jl. Wijaya II No. 18, Kebayoran Baru, Jakarta Selatan 12160',
             'google_maps_keyword' => 'LegalPartner.ID, Kebayoran Baru, Jakarta Selatan',
             'google_maps_embed_url' => 'https://www.google.com/maps?q=Kebayoran%20Baru%2C%20Jakarta%20Selatan&output=embed',

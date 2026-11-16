@@ -28,6 +28,7 @@ import { PublicNavbar } from '@/components/public-navbar';
 import { AnimatedShinyText } from '@/components/ui/animated-shiny-text';
 import { Marquee } from '@/components/ui/marquee';
 import { categoryIcon } from '@/lib/category-icons';
+import { ConsultLink } from '@/components/consult-link';
 
 type FeaturedService = {
     name: string;
@@ -78,7 +79,6 @@ export default function Home({ featured, categories, partners, articles, faqs, s
         .slice(0, 3)
         .map((name) => name.split(' ').slice(0, 2).map((part) => part[0]).join('').toUpperCase());
     const whatsappHref = props.siteContact.whatsapp ? `https://wa.me/${props.siteContact.whatsapp}` : null;
-    const consultHref = `${partnershipIndex().url}#form-pendaftaran`;
     const categoriesCarouselRef = useRef<HTMLDivElement>(null);
     const [canScrollCategoriesLeft, setCanScrollCategoriesLeft] = useState(false);
     const [canScrollCategoriesRight, setCanScrollCategoriesRight] = useState(false);
@@ -166,9 +166,9 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                     Lihat layanan
                                     <ArrowRight aria-hidden="true" className="size-4" />
                                 </Link>
-                                <Link href={consultHref} className="inline-flex h-12 items-center rounded-full border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-800 transition-colors hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2">
+                                <ConsultLink className="inline-flex h-12 items-center rounded-full border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-800 transition-colors hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] focus-visible:ring-offset-2">
                                     Konsultasi gratis
-                                </Link>
+                                </ConsultLink>
                             </div>
                             <ul className="mt-10 grid gap-4 border-t border-slate-200/80 pt-8 sm:grid-cols-3">
                                 {heroPoints.map((point) => (
@@ -222,8 +222,7 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                 </Link>
                             )}
 
-                            <Link
-                                href={consultHref}
+                            <ConsultLink
                                 className={`absolute -bottom-2 right-0 flex items-center gap-3 rounded-2xl border border-white bg-white/95 py-3 pl-3 pr-4 backdrop-blur-xl transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2547F9] lg:-right-4 ${cardShadow}`}
                             >
                                 <span className="flex -space-x-2">
@@ -237,7 +236,7 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                     <span className="block text-sm font-semibold text-slate-950">Konsultasi gratis</span>
                                     <span className="block text-xs text-slate-500">Dengan tim ahli kami</span>
                                 </span>
-                            </Link>
+                            </ConsultLink>
                         </div>
                     </motion.section>
 
@@ -356,10 +355,10 @@ export default function Home({ featured, categories, partners, articles, faqs, s
                                     </p>
                                     <h2 className="mt-4 text-2xl font-semibold leading-tight tracking-tight">Mulai langkah legalitas bisnis Anda dengan konsultasi gratis.</h2>
                                 </div>
-                                <Link href={consultHref} className="relative inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-[#2547F9] transition-colors hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2547F9]">
+                                <ConsultLink className="relative inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-[#2547F9] transition-colors hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2547F9]">
                                     Konsultasi sekarang
                                     <ArrowRight aria-hidden="true" className="size-4" />
-                                </Link>
+                                </ConsultLink>
                             </div>
 
                             <div className={`min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 ${cardShadow}`}>

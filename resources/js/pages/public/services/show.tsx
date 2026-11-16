@@ -51,13 +51,16 @@ const formatPrice = (price: number) =>
 export default function ServiceShow({
     service,
     whatsappNumber,
+    whatsappMessageTemplate,
 }: {
     service: ServiceDetail;
     whatsappNumber: string | null;
+    whatsappMessageTemplate: string | null;
 }) {
     const generalWhatsAppUrl = createWhatsAppUrl({
         phone: whatsappNumber,
         serviceName: service.name,
+        template: whatsappMessageTemplate,
     });
     const serviceFacts = [
         { label: 'Pilihan paket', value: service.packages.length, icon: Layers3 },
@@ -220,6 +223,7 @@ export default function ServiceShow({
                                             : formatPrice(servicePackage.price));
                                     const packageWhatsAppUrl = createWhatsAppUrl({
                                         phone: whatsappNumber,
+                                        template: whatsappMessageTemplate,
                                         serviceName: service.name,
                                         packageName: servicePackage.name,
                                         priceLabel: packagePriceLabel,

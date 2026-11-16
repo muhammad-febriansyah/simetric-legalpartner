@@ -3,7 +3,6 @@ import { ArrowLeft, ArrowRight, Check, Copy, Facebook, Instagram, Linkedin, Mess
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { index as blogIndex } from '@/actions/App/Http/Controllers/Site/ArticleController';
-import { index as partnershipIndex } from '@/actions/App/Http/Controllers/Site/PartnershipApplicationController';
 import { index as servicesIndex } from '@/actions/App/Http/Controllers/Site/ServiceController';
 import { MarkdownContent } from '@/components/admin/markdown-editor';
 import { ArticleCard, ArticleMeta } from '@/components/article-card';
@@ -11,6 +10,7 @@ import type { ArticleSummary } from '@/components/article-card';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicNavbar } from '@/components/public-navbar';
 import { SocialIcon } from '@/components/social-icons';
+import { ConsultLink } from '@/components/consult-link';
 
 type Props = {
     article: ArticleSummary & {
@@ -178,10 +178,10 @@ export default function BlogShow({ article, related }: Props) {
                             <p className="text-xs font-medium text-white/50">Butuh pendampingan?</p>
                             <p className="mt-2 text-2xl font-semibold leading-snug tracking-tight">Ceritakan kebutuhan usaha Anda, kami bantu petakan langkahnya.</p>
                             <div className="mt-6 flex flex-wrap gap-3">
-                                <Link href={`${partnershipIndex().url}#form-pendaftaran`} className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#172F8A]">
+                                <ConsultLink className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-slate-950 transition-colors hover:bg-[#EEF1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#172F8A]">
                                     <MessageCircle aria-hidden="true" className="size-4" />
                                     Konsultasi gratis
-                                </Link>
+                                </ConsultLink>
                                 <Link href={servicesIndex()} className="inline-flex h-11 items-center gap-2 rounded-full border border-white/20 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                                     Lihat layanan
                                     <ArrowRight aria-hidden="true" className="size-4" />

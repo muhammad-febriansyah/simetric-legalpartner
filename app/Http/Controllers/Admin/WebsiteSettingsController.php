@@ -29,6 +29,8 @@ class WebsiteSettingsController extends Controller
         'contact_phone' => 'contact_phone',
         'whatsapp_number' => 'whatsapp_number',
         'business_hours' => 'business_hours',
+        'whatsapp_consult_message' => 'whatsapp_consult_message',
+        'whatsapp_service_message' => 'whatsapp_service_message',
         'contact_address' => 'contact_address',
         'google_maps_keyword' => 'google_maps_keyword',
         'google_maps_embed_url' => 'google_maps_embed_url',
